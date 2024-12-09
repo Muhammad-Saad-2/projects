@@ -3,15 +3,13 @@ from sqlalchemy.orm import sessionmaker
 import os 
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 #connection string to pgsql database 
 database_url = os.getenv("DATABASE_URL")
 
-if database_url:
-    print("yes")
-else:
-    print("no")
+
 #creating the database engine 
 engine = create_engine(database_url)
 
