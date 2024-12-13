@@ -16,7 +16,7 @@ class UserLogin(BaseModel):
     email : EmailStr # ensuring that the email is valid
     password:  str #plain text password for login
 
-class TokeN(BaseModel):
+class Token(BaseModel):
     access_token : str
     token_type : str 
 
