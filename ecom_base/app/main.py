@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from . import schemas, crud, models, database, utils 
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from app.schemas import Token
 
 #initalize fastapi app 
@@ -9,6 +9,8 @@ app = FastAPI()
 
 #creating database tables 
 models.Base.metadata.create_all(bind = database.engine)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 @app.post("/register", response_model=schemas.UserResponse)
 def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
@@ -36,3 +38,9 @@ def login_user(form_data : OAuth2PasswordRequestForm = Depends(), db : Session =
     access_token = utils.create_access_token(data= {"sub": user.email, "role": user.role})
     return{"access_token": access_token, "token_type": "bearer"}
 
+
+@app.get("/protected-route")
+def protected_route(token:str = Depends(oauth2_scheme)):
+
+    token_data = utils.verify_token(token)
+    return {"message": "you are autheticated", "token_data": token_data }
