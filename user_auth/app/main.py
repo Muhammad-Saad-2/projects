@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import secrets
-from app import models, schemas, auth, config
+from . import models, schemas, auth, config
 from app.database import get_db, engine
 from fastapi.middleware.cors import CORSMiddleware
 
