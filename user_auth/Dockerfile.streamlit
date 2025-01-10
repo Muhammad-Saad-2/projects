@@ -2,22 +2,31 @@
 FROM python:3.12
 
 
-WORKDIR /app
+WORKDIR /frontend
+
+# RUN pip install poetry
 
 
-COPY pyproject.toml poetry.lock /app/
+# COPY . /pyproject.toml /frontend/
 
 
-RUN pip install poetry
+# COPY . /poetry.lock /frontend/
 
 
-RUN poetry install --no-root
+# COPY app/frontend /frontend/
 
 
-COPY frontend/app.py /app/app.py
+# RUN poetry config virtualenvs.create false
+
+
+# RUN poetry install 
+
+COPY . /requirements.txt /frontend/
+
+RUN pip install -r requirements.txt
 
 
 EXPOSE 8501
 
 
-CMD ["poetry", "run", "streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

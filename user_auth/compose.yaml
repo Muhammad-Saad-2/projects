@@ -1,0 +1,118 @@
+# version: '3.8.0'
+
+# services:
+#   fastapi:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.fastapi
+#     container_name: fastapi
+#     restart: always
+#     depends_on:
+#       - postgres
+#     ports:
+#       - "8000:8000"
+
+#     networks:
+#       - my-api-net
+
+#   streamlit:
+#     image: samdobson/streamlit
+#     container_name: streamlit
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.streamlit
+#     restart: always
+#     depends_on:
+#       - fastapi
+#     ports:
+#       - "8501:8501"
+
+#   # nginx:
+#   #   image: nginx:latest
+#   #   container_name: nginx
+#   #   restart: always
+#   #   depends_on:
+#   #     - fastapi
+#   #     - streamlit
+#   #   ports:
+#   #     - "80:80"
+#   #   volumes:
+#   #     - ./nginx.conf:/etc/nginx/nginx.conf
+
+#   postgres:
+#     image: postgres:13
+#     container_name: postgres
+#     restart: always
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD= sweethomealabama
+#       - POSTGRES_DB= user_auth
+#       - DATABASE_URL=postgresql+psycopg2://postgres:sweethomealabama@localhost:5432/user_auth
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+# volumes:
+#   postgres_data:
+#     driver : local
+
+# networks:
+#   my-api-net:
+#     driver: bridge
+   
+
+
+
+###################################################################################################################################
+
+
+version: '3.8.0'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER= $(POSTGRES_USER)
+      - POSTGRES_PASSWORD= $(POSTGRES_PASSWORD)
+      - POSTGRES_DB= $(POSTGRES_DB)
+      - DATABASE_URL=$(DATABASE_URL_CONTAINER)
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.fastapi
+    container_name: fastapi
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    networks:
+      - my-api-net
+
+  streamlit:
+    image: samdobson/streamlit
+    container_name: streamlit
+    build:
+      context: .
+      dockerfile: Dockerfile.streamlit
+    restart: always
+    depends_on:
+      - fastapi 
+    ports:
+      - "8501:8501"
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  my-api-net:
+    driver: bridge
