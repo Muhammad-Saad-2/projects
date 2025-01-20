@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import secrets
-from . import models, schemas, auth, config
+from app import models, schemas, auth, config
 from app.database import get_db, engine
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -116,4 +116,4 @@ async def get_all_users(
     db: Session = Depends(get_db)
 ):
     users = db.query(models.User).all()
-    return current_user
+    return users

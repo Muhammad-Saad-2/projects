@@ -1,12 +1,25 @@
 from pydantic_settings import BaseSettings
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
+from starlette.config import Config
+from starlette.datastructures import Secret
 
-load_dotenv()
+
+try:
+    config = Config(".env")
+except FileNotFoundError:
+    config = Config()
+
+DATABASE_URL = config("DATABASE_URL", cast=Secret)
+
+
+
+
+# load_dotenv()
 
 class Settings(BaseSettings):
-    DATABASE_URL: str  =  os.getenv("DATBASE_URL")
-    SECRET_KEY:str = os.getenv("SECRET_KEY")
+    DATABASE_URL: str=config("DATABASE_URL", cast=Secret)
+    SECRET_KEY:str =config("SECRET_KEY", cast=Secret)
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
@@ -16,6 +29,11 @@ class Settings(BaseSettings):
         extra = "allow"
 
 settings = Settings()
+
+print(settings.DATABASE_URL)
+print(settings.SECRET_KEY)
+
+
 
 
 

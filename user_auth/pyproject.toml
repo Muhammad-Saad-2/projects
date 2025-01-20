@@ -13,7 +13,6 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = "^1.7.4"
 python-multipart = "^0.0.20"
 sqlalchemy = "^2.0.36"
-psycopg2-binary = "^2.9.10"
 python-dotenv = "^1.0.1"
 pydantic = {extras = ["email"], version = "^2.10.4"}
 uvicorn = "^0.34.0"
@@ -21,6 +20,8 @@ streamlit = "^1.41.1"
 extra-streamlit-components = "^0.1.71"
 bcrypt = "3.2.0"
 pydantic-settings = "^2.7.1"
+psycopg = "^3.2.4"
+poetry-plugin-export = "^1.9.0"
 
 
 [build-system]
