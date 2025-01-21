@@ -1,6 +1,4 @@
 from pydantic_settings import BaseSettings
-# from dotenv import load_dotenv
-# import os
 from starlette.config import Config
 from starlette.datastructures import Secret
 
@@ -10,12 +8,6 @@ try:
 except FileNotFoundError:
     config = Config()
 
-DATABASE_URL = config("DATABASE_URL", cast=Secret)
-
-
-
-
-# load_dotenv()
 
 class Settings(BaseSettings):
     DATABASE_URL: str=config("DATABASE_URL", cast=Secret)
@@ -30,8 +22,6 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-print(settings.DATABASE_URL)
-print(settings.SECRET_KEY)
 
 
 

@@ -22,6 +22,8 @@ bcrypt = "3.2.0"
 pydantic-settings = "^2.7.1"
 psycopg = "^3.2.4"
 poetry-plugin-export = "^1.9.0"
+fastapi-sqlalchemy = "^0.2.1"
+psycopg2 = "^2.9.10"
 
 
 [build-system]

@@ -2,13 +2,13 @@ version: '2.0'
 
 name: "user_auth"
 
+
 services:
   fastapi_service:
     build:
       context: .
       dockerfile: Dockerfile.fastapi
     container_name: fastapi_container
-    restart: always
     depends_on:
       - postgres_db
     ports:
@@ -16,27 +16,20 @@ services:
     networks:
       - my-api-net
 
-
   postgres_db:
     image: postgres:13
     container_name: postgres_container
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=sweethomealabama
-      - POSTGRES_DB=user_auth
-    # healthcheck:
-    #   test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
-    #   interval: 5s
-    #   timeout: 3s
-    #   retries: 5
+      - POSTGRES_USER=$(POSTGRES_USER)
+      - POSTGRES_PASSWORD=$(POSTGRES_PASSWORD)
+      - POSTGRES_DB=$(POSTGRES_DB)
     ports:
       - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_db:/var/lib/postgresql/data
     networks:
       - my-api-net
-
 
 
   streamlit:
@@ -54,7 +47,7 @@ services:
       - my-api-net
 
 volumes:
-  postgres_data:
+  postgres_db:
     driver: local
 
 networks:
