@@ -8,8 +8,7 @@ import extra_streamlit_components as stx
 
 load_dotenv()
 
-BACKEND_URL = os.getenv("BACKEND_URL","http://0.0.0.0:8000") #this url specifically for docker container
-
+BACKEND_URL=os.getenv("API_URL", "http://localhost:8000")
 
 
 

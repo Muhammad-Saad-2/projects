@@ -15,6 +15,10 @@ services:
       - "8000:8000"
     networks:
       - my-api-net
+    environment:
+      - DATABASE_URL=postgresql://postgres:sweethomealabama@postgres_container:5432/user_auth
+      - SECRET_KEY=$(SECRET_KEY)
+      - BACKEND_URL= http://0.0.0.0:8000
 
   postgres_db:
     image: postgres:13
@@ -45,6 +49,9 @@ services:
       - "8501:8501"
     networks:
       - my-api-net
+    environment:
+      - API_URL=http://fastapi_container:8000
+
 
 volumes:
   postgres_db:

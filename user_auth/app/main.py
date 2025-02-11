@@ -13,12 +13,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://0.0.0.0:8501",  # Streamlit in Docker
-        "http://localhost:8501",  # Streamlit accessed from the host
-        "http://127.0.0.1:8501",  # Loopback address
-        "http://fastapi_container:8501"
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
