@@ -1,3 +1,0 @@
-Registration Page : Users can create accounts by providing their name, email and passwors
-Contact Details: Users can store their name and contact details such as phone number, address, city, state, country, and zip code.
-Adressess
