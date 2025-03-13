@@ -7,7 +7,8 @@ class User(SQLModel, table=True):
     id: str = Field(primary_key=True)
     first_name: str
     last_name: str
-    age: int | None = None
+    year_of_birth: int
+    month_of_birth: int
     username: str = Field(unique=True)
     email : str = Field(unique=True)
     password : str #hashed password
@@ -21,7 +22,8 @@ class User(SQLModel, table=True):
 class UserCreate(SQLModel):
     first_name : str
     last_name: str
-    age: int | None = None
+    year_of_birth: int
+    month_of_birth: int
     username: str
     email : str
     password : str

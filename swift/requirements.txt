@@ -1,4 +1,4 @@
 greenlet
 passlib
-python-doten
+python-dotenv
 sqlalchemy
