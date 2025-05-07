@@ -1,22 +1,26 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from motor.motor_asyncio import AsyncIOMotorClient
+from sqlmodel  import SQLModel, create_engine, Session
+from sqlmodel import SQLModel
 from ..config.settings import get_settings
-from pymongo.mongo_client import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo.server_api import ServerApi
+
 
 settings = get_settings()
 
 # PostgreSQL setup
-SQLALCHEMY_DATABASE_URL = settings.POSTGRES_URL
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+PGSQL_DATABASE_URL = settings.POSTGRES_URL
+engine = create_engine(PGSQL_DATABASE_URL)
+SessionLocal = Session(autocommit=False, autoflush=False, bind=engine)
+Base = SQLModel()
 
 # MongoDB setup
-mongodb_client = MongoClient(settings.MONGODB_URL, server_api=ServerApi('1'))
-mongodb = mongodb_client.get_database("twitter_clone")
+mongodb_client= AsyncIOMotorClient(settings.MONGODB_URL, server_api = ServerApi('1'))
+mongodb = mongodb_client.get_database("swift")
+
+# #Redis Setup
+redis_client = settings.REDIS_URL
+
+
 
 # Dependency to get DB session
 def get_db():

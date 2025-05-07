@@ -59,7 +59,7 @@ async def create_post(content: str, user_id: str):
         "likes": 0,
         "comments": []
     }
-    result = mongodb.posts.insert_one(post)
+    result = await mongodb.posts.insert_one(post)
     post["_id"] = str(result.inserted_id)
     
     # Broadcast new post to all connected clients
@@ -79,7 +79,7 @@ async def get_posts(skip: int = 0, limit: int = 10):
 
 @app.post("/posts/{post_id}/like")
 async def like_post(post_id: str, user_id: str):
-    post = mongodb.posts.find_one({"_id": ObjectId(post_id)})
+    post = await mongodb.posts.find_one({"_id": ObjectId(post_id)})
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     
@@ -108,7 +108,7 @@ async def add_comment(post_id: str, user_id: str, content: str):
         "created_at": datetime.utcnow().isoformat()
     }
     
-    mongodb.posts.update_one(
+    await mongodb.posts.update_one(
         {"_id": ObjectId(post_id)},
         {"$push": {"comments": comment}}
     )

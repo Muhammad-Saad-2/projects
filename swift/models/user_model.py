@@ -1,4 +1,5 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Date
+from pydantic import EmailStr
 from typing import Optional
 from datetime import datetime
 
@@ -10,8 +11,8 @@ class User(SQLModel, table=True):
     year_of_birth: int
     month_of_birth: int
     username: str = Field(unique=True)
-    email : str = Field(unique=True)
-    password : str #hashed password
+    email : EmailStr = Field(unique=True, nullable=False)
+    password : str 
     bio: Optional[str] = None 
     profile_picture: Optional[str] = None
     created_at: datetime = Field(default=datetime.now())
@@ -22,10 +23,9 @@ class User(SQLModel, table=True):
 class UserCreate(SQLModel):
     first_name : str
     last_name: str
-    year_of_birth: int
-    month_of_birth: int
+    dob : Date
     username: str
-    email : str
+    email : EmailStr 
     password : str
     bio: Optional[str] = None
     profile_picture: Optional[str] = None
