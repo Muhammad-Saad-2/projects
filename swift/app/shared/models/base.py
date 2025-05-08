@@ -14,10 +14,11 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    
+    verified_user = Boolean
+
     # Relationships
-    followers = Relationship("Follow", foreign_keys="Follow.followed_id", back_populates="followed")
-    following = Relationship("Follow", foreign_keys="Follow.follower_id", back_populates="follower")
+    followers = Relationship(back_populates="followed", link_model="Follow")
+    following = Relationship(back_populates="follower", link_model="Follow")
 
 class Follow(Base):
     __tablename__ = "follows"
@@ -29,4 +30,4 @@ class Follow(Base):
     
     # Relationships
     follower = Relationship("User", foreign_keys=[follower_id], back_populates="following")
-    followed = Relationship("User", foreign_keys=[followed_id], back_populates="followers") 
+    followed = Relationship("User", foreign_keys=[followed_id], back_populates="followers")
