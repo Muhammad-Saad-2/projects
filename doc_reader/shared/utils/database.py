@@ -35,23 +35,24 @@ AsyncSessionLocal = async_sessionmaker(
     expire_on_commit=False
 )
 
+'''Establish connection with mongodb'''
 async def create_table():
     async with async_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 async def connect_mongo():
-        client = AsyncMongoClient(settings.MONGODB_URL, server_api = ServerApi(
+        mongodb = AsyncMongoClient(settings.MONGODB_URL, server_api = ServerApi(
             version= '1', strict=True, deprecation_errors=True
         ))
 
 
 
         try:
-            await client.admin.command({'ping': 1})
+            await mongodb.admin.command({'ping': 1})
             print("pinged your deployment")
         except Exception as e:
             print(e)
         finally:
-             await client.close()
+             await mongodb.close()
 
 asyncio.run (connect_mongo())
