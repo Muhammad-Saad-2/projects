@@ -36,6 +36,7 @@ AsyncSessionLocal = async_sessionmaker(
 )
 
 
+    
 async def create_table():
     try:
         async with async_engine.begin() as conn:
@@ -47,7 +48,13 @@ async def create_table():
 
 asyncio.run(create_table())
 
-
+'''dependency to get database function'''
+def get_postgres():
+     pg = AsyncSessionLocal()
+     try:
+          yield pg
+     finally:
+          pg.close()
 
 
 '''Establish connection with mongodb'''
