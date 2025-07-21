@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv
 from functools import lru_cache
 import os 
@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     REDIS_USERNAME:str  = os.getenv("REDIS_USERNAME", "")
     REDIS_PASSWORD:str  = os.getenv("REDIS_PASSWORD", "")
 
-   
+
     # JWT Settings
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-here")
     ALGORITHM: str = "HS256"
@@ -25,10 +25,10 @@ class Settings(BaseSettings):
     GOOGLE_EMAIL: str = os.getenv("GOOGLE_EMAIL", "")
     GOOGLE_PASSWORD: str = os.getenv("GOOGLE_PASSWORD", "")
 
-    class Config:
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file= ".env", extra="ignore")
 
 @lru_cache(maxsize=100)
 def get_settings():
     return Settings()
+
 

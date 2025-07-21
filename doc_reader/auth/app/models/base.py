@@ -1,33 +1,38 @@
-from sqlmodel import SQLModel, Field, Relationship
-from datetime import datetime, timezone, timedelta
-from typing import Optional
+from sqlmodel import SQLModel, Field
+from datetime import datetime
+from shared.config.settings import get_settings
+from pydantic import EmailStr, ConfigDict
+from sqlalchemy import func
+
+
+settings = get_settings()
+POSTGRES_URL = settings.POSTGRES_URL
 
 class Base(SQLModel):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    created_at: datetime = Field(
-        default_factory=lambda:datetime.now(timezone.utc),
-        nullable= False
-    )
+    id: int = Field(primary_key=True, default= None)
+    created_at: datetime = Field(default_factory=func.now)
     updated_at: datetime = Field(
-        default_factory=lambda:datetime.now(timezone.utc),
-        sa_column_kwargs={"onupdate" : lambda : datetime.now(timezone.utc)},
-        nullable=False
-    
-)
-class User(Base ,table = True):
+        default_factory=func.now, 
+        sa_column_kwargs={
+            "onupdate": func.now()
+            }
+        )
+
+
+class User(Base,table = True):
     username: str = Field(index = True,unique = True, nullable = False)
-    email: str = Field(index = True, unique =True, nullable = False)
+    email: EmailStr = Field(index = True, unique =True, nullable = False)
     hashed_password : str 
-    profile = Relationship(back_populates="user")
+    # profile = Relationship(back_populates="user")
     
 
 
-class Profile(Base, table = True):
+class Profile(Base, table=True):
     full_name: str = Field(max_length=50, nullable=False)
+    username: str = Field(unique=True, max_length= 50 )
     bio: str | None = Field(max_length=120)
-    user_id: int = Field(foreign_key=True, unique=True)
-    user: User = Relationship(back_populates="profile")
-
+    user_id: int = Field(foreign_key="user.id")
+    # user: User = Relationship(back_populates="profile")
 
 
     
@@ -47,4 +52,4 @@ class Profile(Base, table = True):
 
 
 def get_base():
-    return Base
+    return Base()

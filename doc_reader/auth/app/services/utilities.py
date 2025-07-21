@@ -1,5 +1,6 @@
 from passlib.context import CryptContext
-from passlib.hash import pbkdf2_sha256
+import re
+from pydantic import EmailStr
 
 pwd_context = CryptContext(schemes=["sha256_crypt", "md5_crypt", "des_crypt"])
 
@@ -10,10 +11,16 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
     
 
-# hashed = hash_password("wassupnigga")
 
-# verified_password =verify_password("wassupnigga", hashed)
-# if verified_password == True:
-#     print("validated")
-# else:
-#     print("can't validate")
+
+
+def is_valid_email_regex(email: EmailStr):
+    regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+    return re.match(regex, email) is not None
+
+my_email = is_valid_email_regex("saadjameel2001@gmail.com")
+if my_email == True:
+    print("yes")
+else:
+    print("no")

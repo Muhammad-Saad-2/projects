@@ -1,8 +1,8 @@
 import redis
-from shared.config.settings import Settings
+from shared.config.settings import get_settings
+ 
 
-
-settings = Settings()
+settings = get_settings()
 
 '''Esatablish connection with redis'''
 r = redis.Redis(
