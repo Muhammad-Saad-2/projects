@@ -1,7 +1,11 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import load_dotenv
 from functools import lru_cache
-import os 
+from fastapi_mail import ConnectionConfig
+import os
+from typing import ClassVar
+
+
 
 
 load_dotenv()
@@ -22,11 +26,29 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     # Email Settings
-    GOOGLE_EMAIL: str = os.getenv("GOOGLE_EMAIL", "")
-    GOOGLE_PASSWORD: str = os.getenv("GOOGLE_PASSWORD", "")
 
+    email_conf:ClassVar[ConnectionConfig] = ConnectionConfig(
+        MAIL_USERNAME= os.getenv("GOOGLE_EMAIL", ""),
+        MAIL_PASSWORD=os.getenv("GOOGLE_PASSWORD", ""),
+        MAIL_FROM=os.getenv("SENDER_MAIL"),
+        MAIL_FROM_NAME= "Muhammad Saad",
+        MAIL_SERVER="smtp.gmail.com",
+        MAIL_PORT=587,
+        MAIL_STARTTLS=True,
+        MAIL_SSL_TLS=False,
+        USE_CREDENTIALS=True,
+        VALIDATE_CERTS=True,
+
+    )
+
+
+    '''extra = "ignore" because pydantic encountered an extra environmental variable from my .env file (google_api_key) since my Settings model did not
+    not have any corresponding field defined for that environmnetal variable '''
+    
     model_config = SettingsConfigDict(env_file= ".env", extra="ignore")
 
+
+                                                                        
 @lru_cache(maxsize=100)
 def get_settings():
     return Settings()

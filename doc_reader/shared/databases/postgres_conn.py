@@ -1,7 +1,6 @@
 from shared.config.settings import get_settings
 from auth.app.models.base import get_base
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-import asyncio
 
 
 settings = get_settings()
@@ -29,7 +28,7 @@ async def create_table():
     except Exception as e:
          print(e)
     finally:
-         conn.close()
+        await conn.close()
 
 
 SessionLocal= async_sessionmaker(

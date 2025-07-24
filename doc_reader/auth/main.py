@@ -2,25 +2,17 @@ from typing import Annotated
 from shared.databases.postgres_conn import async_engine, get_async_session, create_table
 from auth.app.models.base  import get_base, User
 from fastapi import FastAPI, Depends, HTTPException, APIRouter
-from auth.app.schemas.user_schemas import UserCreate, UserLogin
+from auth.app.schemas.auth_schemas import UserCreate, UserLogin
 from sqlmodel import Session, select
 from contextlib import asynccontextmanager
 import asyncio
-from auth.app.services.utilities import hash_password, is_valid_email_regex, run_password_policy, verify_password
+from auth.app.services.auth_services import hash_password, is_valid_email_regex, run_password_policy, verify_password
 from sqlalchemy.ext.asyncio import AsyncSession
 from auth.app.routers.auth_router import router
 
 base = get_base()
 engine = async_engine 
 SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
-
-
-# async def create_tables():
-#     try:
-#         async with engine.begin() as conn:
-#             await conn.run_sync(base.metadata.create_all)
-#     finally:
-#         await conn.close()
 
 
 

@@ -1,16 +1,25 @@
 
 from typing import Annotated
-from shared.databases.postgres_conn import async_engine, get_async_session, create_table
+from shared.databases.redis_conn import redis_client
+from shared.databases.postgres_conn import async_engine, get_async_session
 from auth.app.models.base  import get_base, User
-from fastapi import FastAPI, Depends, HTTPException, APIRouter
-from auth.app.schemas.user_schemas import UserCreate, UserLogin
-from sqlmodel import Session, select
-from contextlib import asynccontextmanager
+from fastapi import  Depends, HTTPException, APIRouter, status
+from auth.app.schemas.auth_schemas import UserCreate, UserLogin, EmailSchema
+from sqlmodel import  select
 import asyncio
-from auth.app.services.utilities import hash_password, is_valid_email_regex, run_password_policy, verify_password
+from auth.app.services.auth_services import hash_password, is_valid_email_regex, run_password_policy, verify_password, generate_otp
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import EmailStr 
+from fastapi.responses import JSONResponse
+from fastapi_mail import MessageSchema, MessageType, FastMail
+from shared.config.settings import get_settings
+from datetime import datetime, timedelta
+import logging
 
+
+
+logger = logging.getLogger("auth.app.routers.auth_router")
+settings = get_settings()
 base = get_base()
 engine = async_engine 
 SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
@@ -32,11 +41,17 @@ async def register_user(
     if not existing_user:
         regex_check_on_email = is_valid_email_regex(user.email)
         if not regex_check_on_email:
-            raise HTTPException(status_code=401,detail="Invalid Email Pattern")
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid Email Pattern"
+            )
         password_policy = run_password_policy(user.password)
         if not password_policy:
             
-            raise HTTPException(status_code=401,detail="the password must contain atleast one uppercase, number and a special character")
+            raise HTTPException(
+                status_code=401,
+                detail="the password must contain atleast one uppercase, number and a special character"
+            )
        
         password = hash_password(user.password)
         db_user = User(
@@ -51,8 +66,10 @@ async def register_user(
         return db_user
     
     else:
-        raise HTTPException(status_code=401, detail="user already registered")
-
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS, 
+            detail="user already registered"
+        )
 
 @router.post("/sign_in/")
 async def login(
@@ -68,19 +85,59 @@ async def login(
     db_password = registered_user.hashed_password
     password_match =verify_password(user_password, db_password)
     if not password_match:
-        raise HTTPException(status_code= 401, detail= "incorrect password")
+        raise HTTPException(
+            status_code= status.HTTP_401_UNAUTHORIZED, 
+            detail= "incorrect password"
+        )
     else:
         return {"message" : "user logged in"}
+
+
+@router.post("/request_otp/")
+async def send_otp(email: EmailSchema)-> JSONResponse:
+    otp_code = generate_otp()
+    otp_expiration_time = datetime.now() + timedelta(seconds=900)
+
+    user_email = email
+    redis_key = f"otp: {user_email}"
+    try:
+        await redis_client.set(redis_key, otp_code, ex=otp_expiration_time)
+        logger.info("otp stored in redis for {user_email} with key: {redis_key}")
+    except Exception as e:
+        logger.error("failed to store otp for user {user_email}: {e}", exc_info = True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to store OTP, please try again"
+        ) 
+        
+
+    html = f""" 
+    <p> Dear User </p>
+    <p>Your One-time-password is </p>
+    <h2>{otp_code}</h2>
+    <p>It will expire in 15 minutes
+    
+    """
+
+    message = MessageSchema(
+        subject="FastAPI mail module test",
+        recipients=[user_email],
+        body=html, 
+        subtype=MessageType.html
+
+    )
+    fm = FastMail(settings.email_conf)
+
+    await fm.send_message(message)
+    return JSONResponse(status_code= 200, content={"message" : f"OTP was successfully sent to {email}"})
+    
+
+    
+
+    
 
 @router.put("/forget_password")
 async def reset_password(email: EmailStr):
     pass 
-
-
-@router.post("/verfiy_email")
-async def send_otp(email: EmailStr):
-    pass 
-
-
 
 
