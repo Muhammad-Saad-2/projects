@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     MONGODB_URL:str  = os.getenv("MONGODB_URL", "")
     POSTGRES_URL:str  = os.getenv("POSTGRES_URL", "")
     REDIS_HOST:str  = os.getenv("REDIS_HOST", "")
-    REDIS_PORT: int = int(os.getenv("REDIS_PORT", 13582 ))
+    REDIS_PORT: int = int(os.getenv("REDIS_PORT", 19437 ))
     REDIS_USERNAME:str  = os.getenv("REDIS_USERNAME", "")
     REDIS_PASSWORD:str  = os.getenv("REDIS_PASSWORD", "")
 

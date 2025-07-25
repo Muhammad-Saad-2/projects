@@ -13,3 +13,7 @@ redis_client = redis.Redis(
     password = settings.REDIS_PASSWORD
     
 )
+
+# value = redis_client.set("foo","bar")
+# result = redis_client.get("foo")
+# print(result)

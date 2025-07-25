@@ -18,6 +18,7 @@ import logging
 
 
 
+
 logger = logging.getLogger("auth.app.routers.auth_router")
 settings = get_settings()
 base = get_base()
@@ -42,7 +43,7 @@ async def register_user(
         regex_check_on_email = is_valid_email_regex(user.email)
         if not regex_check_on_email:
             raise HTTPException(
-                status_code=401,
+                status_code=status.HTTP_403_FORBIDDEN,
                 detail="Invalid Email Pattern"
             )
         password_policy = run_password_policy(user.password)
@@ -94,14 +95,14 @@ async def login(
 
 
 @router.post("/request_otp/")
-async def send_otp(email: EmailSchema)-> JSONResponse:
+async def send_otp(email: EmailStr)-> JSONResponse:
     otp_code = generate_otp()
-    otp_expiration_time = datetime.now() + timedelta(seconds=900)
+    otp_expiration_time = timedelta(seconds=900)
 
     user_email = email
     redis_key = f"otp: {user_email}"
     try:
-        await redis_client.set(redis_key, otp_code, ex=otp_expiration_time)
+        redis_client.set(redis_key, otp_code, ex=otp_expiration_time)
         logger.info("otp stored in redis for {user_email} with key: {redis_key}")
     except Exception as e:
         logger.error("failed to store otp for user {user_email}: {e}", exc_info = True)
@@ -120,7 +121,7 @@ async def send_otp(email: EmailSchema)-> JSONResponse:
     """
 
     message = MessageSchema(
-        subject="FastAPI mail module test",
+        subject="One-Time-Password-Verification",
         recipients=[user_email],
         body=html, 
         subtype=MessageType.html
