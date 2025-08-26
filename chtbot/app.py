@@ -259,7 +259,7 @@ with st.container(border=True):
 
     if clear:
         st.session_state.history = []
-        st.experimental_rerun()
+        st.rerun()
 
     if ask and user_query.strip():
         st.session_state.history.append({"role": "user", "content": user_query})
