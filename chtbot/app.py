@@ -288,7 +288,7 @@ with st.container(border=True):
             else:
                 answer = "I couldn't find relevant entries and no LLM is configured."
             st.session_state.history.append({"role": "assistant", "content": answer})
-            st.experimental_rerun()
+            st.rerun()
 
         messages = [
             SystemMessage(content=system_prompt),
@@ -303,7 +303,7 @@ with st.container(border=True):
                 answer = f"LLM error: {e}"
 
         st.session_state.history.append({"role": "assistant", "content": answer})
-        st.experimental_rerun()
+        st.rerun()
 
 if st.session_state.history and retriever is not None and show_ctx:
     with st.expander("🔎 Sources / Citations (Top matches)", expanded=False):
