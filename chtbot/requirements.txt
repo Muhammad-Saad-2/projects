@@ -1,0 +1,9 @@
+
+streamlit
+pyngrok
+sentence-transformers
+langchain-community
+pinecone
+pandas==2.2.2
+langchain-pinecone
+langchain-huggingface
