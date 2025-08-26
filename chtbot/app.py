@@ -109,7 +109,7 @@ def ensure_index(pc: Pinecone, name: str, region: str, dim: int = 384) -> Any:
 @st.cache_resource(show_spinner=False)
 def get_llm(google_key: str | None, google_model: str, temperature: float):
     if google_key:
-        os.environ.get["GOOGLE_API_KEY"] = google_key
+        os.environ["GOOGLE_API_KEY"] = google_key
         return ChatGoogleGenerativeAI(model=google_model, temperature=temperature)
     st.warning("No Google Gemini key provided. Answers will be retrieval-only summaries.")
     return None
