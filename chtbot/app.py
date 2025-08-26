@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain_pinecone import PineconeVectorStore
+from langchain_community.vectorstores import Pinecone as PineconeVectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pinecone import Pinecone
 import os
