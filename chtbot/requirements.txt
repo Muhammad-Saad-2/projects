@@ -1,9 +1,10 @@
 
 streamlit
-pyngrok
+langchain
 sentence-transformers
 langchain-community
+langchain-google-genai
 pinecone
 pandas==2.2.2
-# langchain-pinecone
+langchain-pinecone
 langchain-huggingface
