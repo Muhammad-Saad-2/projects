@@ -1,333 +1,278 @@
-"""
-Streamlit RAG Chatbot using Pinecone + HuggingFace Embeddings + Google Gemini LLM
------------------------------------------------------------------------------------
-How to run:
-  1) Save this file as `app.py`.
-  2) Install deps (suggested):
-     pip install -r requirements.txt
-  3) Create a `.streamlit/secrets.toml` with:
-
-     PINECONE_API_KEY = "your_pinecone_key"
-     GOOGLE_API_KEY   = "your_google_api_key"
-
-  4) Run: streamlit run app.py
-
-Notes:
-- You can upload a CSV (like your `products-100.csv`) or point to a local CSV path.
-- The index uses sentence-transformers `all-MiniLM-L6-v2` (384 dims).
-- Each upload wipes out the old index so chat is always with the *latest* CSV.
-"""
-
+# app.py
 import os
 import time
 from uuid import uuid4
-from typing import List, Dict, Any
+from typing import List
 
 import pandas as pd
 import streamlit as st
 
-from pinecone import Pinecone, ServerlessSpec
-from sentence_transformers import SentenceTransformer
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_pinecone import PineconeVectorStore
-
-# Google Gemini LLM
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.schema import Document
+from langchain.vectorstores import FAISS
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
-# ---------------------------------
-# App Config & Helpers
-# ---------------------------------
-st.set_page_config(page_title="RAG Product Chatbot", page_icon="🧠", layout="wide")
+# ---------------------------
+# Config / UI
+# ---------------------------
+st.set_page_config(page_title="CSV → RAG Chat (FAISS, rebuild on upload)", layout="wide", page_icon="🤖")
+st.title("CSV Chatbot — fresh FAISS per upload")
+st.caption("Upload a CSV and chat only with that CSV. Old FAISS won't leak answers.")
 
-st.title("🧠📦 RAG Product Chatbot (Pinecone + HF Embeddings + Google Gemini)")
-st.caption("Upload your product CSV, index to Pinecone, and chat with your data.")
-
-# Sidebar: Secrets & Settings
 with st.sidebar:
-    st.header("🔐 Keys & Settings")
-    pinecone_api_key = st.secrets.get("PINECONE_API_KEY") or os.getenv("PINECONE_API_KEY")
-    google_api_key = st.secrets.get("GOOGLE_API_KEY") or os.getenv("GOOGLE_API_KEY")
-
-    if not pinecone_api_key:
-        st.error("PINECONE_API_KEY missing. Add it in .streamlit/secrets.toml or env var.")
-    if not google_api_key:
-        st.error("GOOGLE_API_KEY missing. Add it in .streamlit/secrets.toml or env var.")
-
-    index_name = st.text_input("Pinecone Index Name", value="products-index")
-    pinecone_region = st.selectbox("Pinecone Region", ["us-east-1", "us-west-2", "eu-central-1"], index=0)
-    create_if_missing = st.checkbox("Create index if missing", value=True)
+    st.header("Settings")
+    hf_model = st.text_input("Embedding model (sentence-transformers)", value="all-MiniLM-L6-v2")
+    chunk_size = st.number_input("Chunk size", min_value=256, max_value=4000, value=1000, step=100)
+    chunk_overlap = st.number_input("Chunk overlap", min_value=0, max_value=1000, value=200, step=50)
+    k = st.number_input("Retriever k (top matches)", min_value=1, max_value=10, value=4, step=1)
+    persist_index = st.checkbox("Persist FAISS index to disk (db/faiss_index)", value=False)
+    persist_path = "db/faiss_index"
 
     st.divider()
-    st.subheader("Embedding Model")
-    model_name = st.text_input("SentenceTransformer model", value="all-MiniLM-L6-v2")
-    st.caption("Dim must match index dimension (384 for all-MiniLM-L6-v2)")
+    st.subheader("Google Gemini LLM")
+    google_model = st.text_input("Gemini model", value="gemini-2.5-flash")
+    temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05)
+    google_api_key = st.text_input("GOOGLE_API_KEY (or set as env var)", value=os.getenv("GOOGLE_API_KEY") or "")
 
-    st.subheader("LLM Provider")
-    google_model = st.text_input("Gemini Model", value="gemini-2.5-flash")
-    temperature = st.slider("LLM Temperature", 0.0, 1.5, 0.2, 0.1)
+# ensure db dir exists if persisting
+if persist_index:
+    os.makedirs(os.path.dirname(persist_path), exist_ok=True)
 
-# Session state for chat
+# ---------------------------
+# Session state
+# ---------------------------
+if "vectorstore" not in st.session_state:
+    st.session_state.vectorstore = None
+
+if "last_uploaded_name" not in st.session_state:
+    st.session_state.last_uploaded_name = None
+
 if "history" not in st.session_state:
     st.session_state.history = []
 
-if "vector_store" not in st.session_state:
-    st.session_state.vector_store = None
-
-if "pc_index" not in st.session_state:
-    st.session_state.pc_index = None
-
-# ---------------------------------
-# Initialize Pinecone & Embeddings
-# ---------------------------------
+# ---------------------------
+# Helpers
+# ---------------------------
 @st.cache_resource(show_spinner=False)
-def load_embeddings(name: str):
-    _ = SentenceTransformer(name)
-    return HuggingFaceEmbeddings(model_name=name)
+def load_embeddings(model_name: str):
+    # Use local sentence-transformers embedding model (no external API)
+    return HuggingFaceEmbeddings(model_name=model_name)
 
-@st.cache_resource(show_spinner=False)
-def init_pinecone_client(api_key: str):
-    return Pinecone(api_key=api_key)
+def df_to_documents(df: pd.DataFrame) -> List[Document]:
+    # Convert each row to a single text document; adjust as needed for your CSV schema
+    texts = []
+    for _, row in df.iterrows():
+        # join column_name: value pairs
+        parts = [f"{col}: {row[col]}" for col in df.columns if pd.notna(row[col])]
+        txt = " | ".join(parts)
+        texts.append(Document(page_content=txt, metadata={"source_row": _.__str__()}))
+    return texts
 
-def ensure_index(_pc: Pinecone, name: str, region: str, dim: int = 384) -> Any:
-    pc = _pc
-    existing = pc.list_indexes().names()
-    if name in existing:
-        desc = pc.describe_index(name)
-        if getattr(desc, "dimension", None) != dim:
-            pc.delete_index(name)
-            pc.create_index(name=name, dimension=dim, metric="cosine", spec=ServerlessSpec(cloud="aws", region=region))
-    else:
-        pc.create_index(name=name, dimension=dim, metric="cosine", spec=ServerlessSpec(cloud="aws", region=region))
-    return pc.Index(name)
+def build_faiss_from_df(df: pd.DataFrame, embeddings, chunk_size: int, chunk_overlap: int) -> FAISS:
+    docs = df_to_documents(df)
 
-# ---------------------------------
-# LLM setup
-# ---------------------------------
-@st.cache_resource(show_spinner=False)
-def get_llm(google_key: str | None, google_model: str, temperature: float):
-    if google_key:
-        os.environ["GOOGLE_API_KEY"] = google_key
-        return ChatGoogleGenerativeAI(model=google_model, temperature=temperature)
-    st.warning("No Google Gemini key provided. Answers will be retrieval-only summaries.")
+    # split into chunks (so long description rows get chunked)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
+    splitted_texts = []
+    for d in docs:
+        splitted_texts.extend([Document(page_content=t, metadata=d.metadata) for t in splitter.split_text(d.page_content)])
+
+    vs = FAISS.from_documents(splitted_texts, embeddings)
+    return vs
+
+def safe_persist(vectorstore: FAISS, path: str):
+    # FAISS.save_local will overwrite the directory contents if called
+    vectorstore.save_local(path)
+
+def safe_load(path: str, embeddings) -> FAISS | None:
+    if os.path.exists(path) and os.path.isdir(path):
+        try:
+            return FAISS.load_local(path, embeddings)
+        except Exception as e:
+            st.warning(f"Could not load saved FAISS index: {e}")
+            return None
     return None
 
-# ---------------------------------
-# Ingestion utils
-# ---------------------------------
-def rows_to_text(row: pd.Series) -> str:
-    parts = [
-        str(row.get("Name", "")),
-        str(row.get("Description", "")),
-        str(row.get("Brand", "")),
-        str(row.get("Category", "")),
-        f"Price: {row.get('Price', '')}",
-        f"Color: {row.get('Color', '')}",
-        f"Size: {row.get('Size', '')}",
-        f"Availability: {row.get('Availability', '')}",
-    ]
-    return " | ".join([p for p in parts if p and p != "nan"]) 
-
-def upsert_dataframe(df: pd.DataFrame, index, embeddings: HuggingFaceEmbeddings, text_key: str = "content", batch_size: int = 128):
-    df = df.copy()
-    df[text_key] = df.apply(rows_to_text, axis=1)
-
-    texts: List[str] = df[text_key].tolist()
-    all_vecs: List[List[float]] = []
-    for i in range(0, len(texts), batch_size):
-        all_vecs.extend(embeddings.embed_documents(texts[i:i+batch_size]))
-
-    items = []
-    for i, row in enumerate(df.to_dict(orient="records")):
-        metadata = {
-            k: (float(v) if k == "Price" and v != "" else v)
-            for k, v in row.items()
-            if k != text_key
-        }
-        metadata[text_key] = row[text_key]
-        items.append({
-            "id": str(uuid4()),
-            "values": all_vecs[i],
-            "metadata": metadata,
-        })
-
-    for i in range(0, len(items), 100):
-        index.upsert(items[i:i+100])
-    time.sleep(2)
-
-# ---------------------------------
-# UI: Ingestion
-# ---------------------------------
-st.subheader("1) 📥 Ingest your CSV into Pinecone")
+# ---------------------------
+# Ingestion area
+# ---------------------------
+st.subheader("1) Upload CSV (every upload creates a fresh FAISS index)")
 left, right = st.columns([2,1])
 
 with left:
-    uploaded = st.file_uploader("Upload CSV (e.g., products-100.csv)", type=["csv"]) 
-    csv_path = st.text_input("...or path to CSV on server", value="")
+    uploaded = st.file_uploader("Upload CSV", type=["csv"])
+    csv_path = st.text_input("...or path to CSV on the server (optional)", value="")
 
 with right:
-    start_ingest = st.button("Index / Re-index CSV", type="primary", use_container_width=True)
+    reindex_btn = st.button("Index / Re-index", type="primary", use_container_width=True)
+    load_saved_btn = st.button("Load saved FAISS (if exists)", use_container_width=True)
 
-if pinecone_api_key:
-    pc = init_pinecone_client(pinecone_api_key)
-else:
-    pc = None
+embeddings = load_embeddings(hf_model)
 
-emb = load_embeddings(model_name)
-
-if start_ingest:
-    if not pc:
-        st.error("Cannot index without Pinecone API key.")
-    else:
-        # ✅ Reset old session state
-        st.session_state.history = []
-        st.session_state.vector_store = None
-        st.session_state.pc_index = None
-
-        with st.spinner("Preparing Pinecone index..."):
-            # Always delete and recreate index so it's fresh for each CSV
-            try:
-                pc.delete_index(index_name)
-            except Exception:
-                pass
-            pc_index = ensure_index(pc, index_name, pinecone_region, dim=384)
-            st.session_state.pc_index = pc_index
-
-        try:
-            if uploaded is not None:
-                df = pd.read_csv(uploaded)
-            elif csv_path:
-                df = pd.read_csv(csv_path)
-            else:
-                st.error("Please upload a CSV or provide a path.")
-                df = None
-        except Exception as e:
-            st.exception(e)
-            df = None
-
-        if df is not None and not df.empty:
-            with st.spinner("Embedding & upserting vectors to Pinecone..."):
-                upsert_dataframe(df, pc_index, emb)
-
-            # ✅ Build a NEW vector store
-            st.session_state.vector_store = PineconeVectorStore(
-                index=pc_index, embedding=emb, text_key="content"
-            )
-
-            st.success("Indexing complete!")
-            try:
-                stats = pc_index.describe_index_stats()
-                total = stats.get("total_vector_count", "?")
-            except Exception:
-                total = "?"
-            st.info(f"Total vectors in Pinecone: {total}")
-        else:
-            st.error("No data to index.")
-
-if pc and st.session_state.pc_index is None:
+# When user chooses to index (or uploads and clicks reindex), rebuild fresh
+def ingest_and_build(file_like):
     try:
-        st.session_state.pc_index = pc.Index(index_name)
-        st.session_state.vector_store = PineconeVectorStore(index=st.session_state.pc_index, embedding=emb, text_key="content")
-    except Exception:
-        pass
+        df = pd.read_csv(file_like)
+    except Exception as e:
+        st.error(f"Failed to read CSV: {e}")
+        return None
 
-# ---------------------------------
-# UI: Chat
-# ---------------------------------
-st.subheader("2) 💬 Chat with your catalog")
-retriever = None
-if st.session_state.vector_store is not None:
-    retriever = st.session_state.vector_store.as_retriever(search_kwargs={"k": 4})
-else:
-    st.info("Index your CSV first to enable retrieval.")
+    if df.empty:
+        st.error("CSV is empty.")
+        return None
 
-llm = get_llm(google_api_key, google_model, temperature)
+    with st.spinner("Building embeddings and FAISS index..."):
+        vs = build_faiss_from_df(df, embeddings, chunk_size, chunk_overlap)
 
-system_prompt = (
-    "You are a helpful product expert. Answer the user's question using ONLY the provided context snippets. "
-    "If the answer is not in the context, say you don't have that information. Be concise, factual, and include "
-    "specific product names/brands when relevant."
-)
-
-with st.container(border=True):
-    for turn in st.session_state.history:
-        if turn["role"] == "user":
-            st.markdown(f"**You:** {turn['content']}")
-        else:
-            st.markdown(f"**Assistant:** {turn['content']}")
-
-    user_query = st.text_input("Ask from the csv", value="")
-    cols = st.columns([1,1,1])
-    with cols[0]:
-        ask = st.button("Ask", type="primary")
-    with cols[1]:
-        clear = st.button("Reset chat")
-    with cols[2]:
-        show_ctx = st.toggle("Show citations", value=True)
-
-    if clear:
-        st.session_state.history = []
-        st.rerun()
-
-    if ask and user_query.strip():
-        st.session_state.history.append({"role": "user", "content": user_query})
-
-        docs = []
-        if retriever is not None:
+        # persist if requested
+        if persist_index:
             try:
-                docs = retriever.get_relevant_documents(user_query)
+                safe_persist(vs, persist_path)
+                st.info(f"Persisted FAISS to {persist_path}")
             except Exception as e:
-                st.warning(f"Retrieval failed: {e}")
+                st.warning(f"Failed to persist index: {e}")
 
+    return vs
+
+# Decide action: index from upload, index from path, or load existing
+if reindex_btn:
+    # prefer file-like upload if present
+    if uploaded is not None:
+        st.session_state.vectorstore = ingest_and_build(uploaded)
+        st.session_state.last_uploaded_name = getattr(uploaded, "name", str(time.time()))
+        st.session_state.history = []
+        st.success("Indexed uploaded CSV; chat context reset.")
+    elif csv_path:
+        if os.path.exists(csv_path):
+            st.session_state.vectorstore = ingest_and_build(csv_path)
+            st.session_state.last_uploaded_name = csv_path
+            st.session_state.history = []
+            st.success("Indexed CSV from path; chat context reset.")
+        else:
+            st.error("Provided csv_path does not exist.")
+    else:
+        st.error("No CSV provided. Upload a file or provide a local path.")
+
+# Allow explicit loading of previously saved FAISS (only used when user wants it)
+if load_saved_btn:
+    loaded = safe_load(persist_path, embeddings)
+    if loaded:
+        st.session_state.vectorstore = loaded
+        st.session_state.last_uploaded_name = f"loaded:{persist_path}"
+        st.session_state.history = []
+        st.success("Loaded persisted FAISS index and reset chat.")
+    else:
+        st.warning("No persisted FAISS index found or failed to load.")
+
+# If user uploaded a file but didn't press reindex yet, show preview and offer to index
+if uploaded is not None and not reindex_btn:
+    st.info(f"Detected uploaded file: {getattr(uploaded, 'name', 'uploaded.csv')}. Press **Index / Re-index** to build a fresh index from it.")
+    st.dataframe(pd.read_csv(uploaded).head(5))
+
+# Also allow loading persisted index automatically only if no upload and no reindex clicked
+if (uploaded is None and not reindex_btn and st.session_state.vectorstore is None and persist_index):
+    # Try to auto-load only if user asked to persist and no upload occurred and there is no vectorstore in session
+    maybe = safe_load(persist_path, embeddings)
+    if maybe:
+        st.session_state.vectorstore = maybe
+        st.session_state.last_uploaded_name = f"auto_loaded:{persist_path}"
+        st.info("Auto-loaded persisted FAISS index (no new CSV uploaded).")
+
+# ---------------------------
+# Chat UI
+# ---------------------------
+st.subheader("2) Chat with the current CSV (fresh index only)")
+if st.session_state.vectorstore is None:
+    st.info("No FAISS vectorstore in memory. Upload a CSV and press 'Index / Re-index' or load a saved index.")
+else:
+    retriever = st.session_state.vectorstore.as_retriever(search_kwargs={"k": k})
+
+    # Prepare LLM
+    if google_api_key:
+        os.environ["GOOGLE_API_KEY"] = google_api_key
+    llm = None
+    try:
+        llm = ChatGoogleGenerativeAI(model=google_model, temperature=temperature)
+    except Exception as e:
+        st.warning(f"Could not initialize Gemini LLM (answers will be retrieval-only): {e}")
+        llm = None
+
+    user_input = st.text_input("Ask a question about your uploaded CSV", value="")
+    ask_btn = st.button("Ask")
+
+    if ask_btn and user_input.strip():
+        # append user turn
+        st.session_state.history.append({"role": "user", "content": user_input})
+
+        # retrieval
+        docs = []
+        try:
+            docs = retriever.get_relevant_documents(user_input)
+        except Exception as e:
+            st.warning(f"Retrieval error: {e}")
+
+        # build context string from retrieved docs
         context_blocks = []
         for d in docs:
             meta = d.metadata or {}
-            name = meta.get("Name") or "Unknown"
-            brand = meta.get("Brand") or ""
-            price = meta.get("Price") or ""
-            snippet = d.page_content[:300]
-            context_blocks.append(f"- {name} {brand} {price}\n  {snippet}")
+            snippet = d.page_content[:800]
+            context_blocks.append(f"- {meta.get('source_row','?')}: {snippet}")
 
-        context_text = "\n".join(context_blocks) if context_blocks else ""
+        context_text = "\n".join(context_blocks)
 
         if llm is None:
+            # simple retrieval-only answer
             if context_text:
-                answer = "I don't have a generative model configured. Here are the most relevant entries I found:\n\n" + context_text
+                answer = "No generative model configured or LLM failed to init. Top matches:\n\n" + context_text
             else:
-                answer = "I couldn't find relevant entries and no LLM is configured."
-            st.session_state.history.append({"role": "assistant", "content": answer})
-            st.rerun()
-
-        messages = [
-            SystemMessage(content=system_prompt),
-            HumanMessage(content=f"Context:\n{context_text}\n\nQuestion: {user_query}")
-        ]
-
-        with st.spinner("Thinking..."):
+                answer = "No relevant context found and no LLM configured."
+        else:
+            system_prompt = (
+                "You are a factual product/CSV assistant. Answer ONLY from the provided context snippets. "
+                "If the answer is not present, say you don't have that information."
+            )
+            messages = [
+                SystemMessage(content=system_prompt),
+                HumanMessage(content=f"Context:\n{context_text}\n\nQuestion: {user_input}")
+            ]
             try:
-                llm_resp = llm.invoke(messages)
-                answer = llm_resp.content
+                resp = llm.invoke(messages)
+                answer = resp.content
             except Exception as e:
-                answer = f"LLM error: {e}"
+                answer = f"LLM error: {e}\n\nTop matches:\n{context_text}"
 
         st.session_state.history.append({"role": "assistant", "content": answer})
-        st.rerun()
 
-if st.session_state.history and retriever is not None and show_ctx:
-    with st.expander("🔎 Sources / Citations (Top matches)", expanded=False):
+    # display chat
+    for turn in st.session_state.history:
+        role = turn["role"]
+        content = turn["content"]
+        if role == "user":
+            st.markdown(f"**You:** {content}")
+        else:
+            st.markdown(f"**Assistant:** {content}")
+
+    # Show citations / sources
+    with st.expander("🔎 Last retrieved context (top matches)"):
         try:
-            docs = retriever.get_relevant_documents(st.session_state.history[-2]["content"]) if len(st.session_state.history) >= 2 else []
-            for i, d in enumerate(docs, start=1):
-                meta = d.metadata or {}
-                name = meta.get("Name", "?")
-                brand = meta.get("Brand", "?")
-                price = meta.get("Price", "?")
-                cat = meta.get("Category", "?")
-                st.markdown(f"**{i}. {name}**  ")
-                st.markdown(f"Brand: {brand} | Category: {cat} | Price: {price}")
-                st.code(d.page_content[:600])
+            # try to show context for last user question
+            if st.session_state.history:
+                last_user = next((t for t in reversed(st.session_state.history) if t["role"]=="user"), None)
+                if last_user:
+                    docs = retriever.get_relevant_documents(last_user["content"])
+                    for i, d in enumerate(docs, start=1):
+                        meta = d.metadata or {}
+                        st.markdown(f"**{i}. Row:** {meta.get('source_row', '?')}")
+                        st.code(d.page_content[:800])
+                else:
+                    st.write("No queries yet.")
+            else:
+                st.write("No conversation yet.")
         except Exception as e:
             st.write(f"(Could not fetch citations: {e})")
 
+# Footer
 st.divider()
-st.caption("Built with ❤️ using Streamlit, Pinecone, LangChain, sentence-transformers, and Google Gemini.")
+st.caption("Built with Streamlit — this app rebuilds FAISS when you upload a CSV so answers always come from the latest file.")
