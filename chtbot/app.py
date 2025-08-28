@@ -15,8 +15,7 @@ How to run:
 Notes:
 - You can upload a CSV (like your `products-100.csv`) or point to a local CSV path.
 - The index uses sentence-transformers `all-MiniLM-L6-v2` (384 dims).
-- If an index named `products-index` exists with wrong dim, it will be deleted and recreated.
-- Chat supports citations (shows which rows were used) and simple history.
+- Each upload wipes out the old index so chat is always with the *latest* CSV.
 """
 
 import os
@@ -28,7 +27,6 @@ import pandas as pd
 import streamlit as st
 
 from pinecone import Pinecone, ServerlessSpec
-
 from sentence_transformers import SentenceTransformer
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
@@ -91,8 +89,8 @@ def load_embeddings(name: str):
 def init_pinecone_client(api_key: str):
     return Pinecone(api_key=api_key)
 
-@st.cache_resource(show_spinner=False)
-def ensure_index(pc: Pinecone, name: str, region: str, dim: int = 384) -> Any:
+def ensure_index(_pc: Pinecone, name: str, region: str, dim: int = 384) -> Any:
+    pc = _pc
     existing = pc.list_indexes().names()
     if name in existing:
         desc = pc.describe_index(name)
@@ -129,7 +127,6 @@ def rows_to_text(row: pd.Series) -> str:
         f"Availability: {row.get('Availability', '')}",
     ]
     return " | ".join([p for p in parts if p and p != "nan"]) 
-
 
 def upsert_dataframe(df: pd.DataFrame, index, embeddings: HuggingFaceEmbeddings, text_key: str = "content", batch_size: int = 128):
     df = df.copy()
@@ -182,11 +179,18 @@ if start_ingest:
     if not pc:
         st.error("Cannot index without Pinecone API key.")
     else:
+        # ✅ Reset old session state
+        st.session_state.history = []
+        st.session_state.vector_store = None
+        st.session_state.pc_index = None
+
         with st.spinner("Preparing Pinecone index..."):
-            if create_if_missing:
-                pc_index = ensure_index(pc, index_name, pinecone_region, dim=384)
-            else:
-                pc_index = pc.Index(index_name)
+            # Always delete and recreate index so it's fresh for each CSV
+            try:
+                pc.delete_index(index_name)
+            except Exception:
+                pass
+            pc_index = ensure_index(pc, index_name, pinecone_region, dim=384)
             st.session_state.pc_index = pc_index
 
         try:
@@ -204,9 +208,13 @@ if start_ingest:
         if df is not None and not df.empty:
             with st.spinner("Embedding & upserting vectors to Pinecone..."):
                 upsert_dataframe(df, pc_index, emb)
-            st.success("Indexing complete!")
 
-            st.session_state.vector_store = PineconeVectorStore(index=pc_index, embedding=emb, text_key="content")
+            # ✅ Build a NEW vector store
+            st.session_state.vector_store = PineconeVectorStore(
+                index=pc_index, embedding=emb, text_key="content"
+            )
+
+            st.success("Indexing complete!")
             try:
                 stats = pc_index.describe_index_stats()
                 total = stats.get("total_vector_count", "?")
@@ -248,7 +256,7 @@ with st.container(border=True):
         else:
             st.markdown(f"**Assistant:** {turn['content']}")
 
-    user_query = st.text_input("Ask about products (pricing, availability, features, etc.)", value="")
+    user_query = st.text_input("Ask from the csv", value="")
     cols = st.columns([1,1,1])
     with cols[0]:
         ask = st.button("Ask", type="primary")
