@@ -14,16 +14,19 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
+
+google_api_key = st.secrets("GOOGLE_API_KEY")
+
 # ---------------------------
 # Config / UI
 # ---------------------------
 st.set_page_config(page_title="CSV → RAG Chat (FAISS, rebuild on upload)", layout="wide", page_icon="🤖")
 st.title("CSV Chatbot — fresh FAISS per upload")
-st.caption("Upload a CSV and chat only with that CSV. Old FAISS won't leak answers.")
+# st.caption("Upload a CSV and chat only with that CSV. Old FAISS won't leak answers.")
 
 with st.sidebar:
     st.header("Settings")
-    hf_model = st.text_input("Embedding model (sentence-transformers)", value="all-MiniLM-L6-v2")
+    hf_model = st.write("Embedding model (sentence-transformers)", value="all-MiniLM-L6-v2")
     chunk_size = st.number_input("Chunk size", min_value=256, max_value=4000, value=1000, step=100)
     chunk_overlap = st.number_input("Chunk overlap", min_value=0, max_value=1000, value=200, step=50)
     k = st.number_input("Retriever k (top matches)", min_value=1, max_value=10, value=4, step=1)
@@ -32,9 +35,9 @@ with st.sidebar:
 
     st.divider()
     st.subheader("Google Gemini LLM")
-    google_model = st.text_input("Gemini model", value="gemini-2.5-flash")
+    google_model = st.write("Gemini model", value="gemini-2.5-flash")
     temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05)
-    google_api_key = st.text_input("GOOGLE_API_KEY (or set as env var)", value=os.getenv("GOOGLE_API_KEY") or "")
+    # google_api_key = st.text_input("GOOGLE_API_KEY (or set as env var)", value=os.getenv("GOOGLE_API_KEY") or "")
 
 # ensure db dir exists if persisting
 if persist_index:
