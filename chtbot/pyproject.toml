@@ -15,5 +15,6 @@ dependencies = [
     "sentence-transformers>=5.1.0",
     "streamlit>=1.49.0",
     "langchain-pinecone>=0.2.11",
-    "pinecone>=7.0.0"
+    "pinecone>=7.0.0",
+    "faiss-cpu>=1.12.0",
 ]
