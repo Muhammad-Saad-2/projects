@@ -15,7 +15,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
 
-google_api_key = st.secrets("GOOGLE_API_KEY")
+google_api_key = st.secrets.get("GOOGLE_API_KEY")
 
 # ---------------------------
 # Config / UI
