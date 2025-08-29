@@ -1,9 +1,6 @@
 # app.py
 import os
-import time
-from uuid import uuid4
 from typing import List
-
 import pandas as pd
 import streamlit as st
 
@@ -20,9 +17,8 @@ google_api_key = st.secrets.get("GOOGLE_API_KEY")
 # ---------------------------
 # Config / UI
 # ---------------------------
-st.set_page_config(page_title="CSV → RAG Chat (FAISS, rebuild on upload)", layout="wide", page_icon="🤖")
-st.title("CSV Chatbot — fresh FAISS per upload")
-# st.caption("Upload a CSV and chat only with that CSV. Old FAISS won't leak answers.")
+st.set_page_config(page_title="CSV Chatbot (multi-chat)", layout="wide", page_icon="🤖")
+st.title("📊 CSV Chatbot — Multiple Chats (FAISS per upload)")
 
 with st.sidebar:
     st.header("Settings")
@@ -30,211 +26,133 @@ with st.sidebar:
     chunk_size = st.number_input("Chunk size", min_value=256, max_value=4000, value=1000, step=100)
     chunk_overlap = st.number_input("Chunk overlap", min_value=0, max_value=1000, value=200, step=50)
     k = st.number_input("Retriever k (top matches)", min_value=1, max_value=10, value=4, step=1)
-    persist_index = st.checkbox("Persist FAISS index to disk (db/faiss_index)", value=False)
-    persist_path = "db/faiss_index"
 
     st.divider()
     st.subheader("Google Gemini LLM")
     google_model = "gemini-2.5-flash"
     temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05)
-    # google_api_key = st.text_input("GOOGLE_API_KEY (or set as env var)", value=os.getenv("GOOGLE_API_KEY") or "")
-
-# ensure db dir exists if persisting
-if persist_index:
-    os.makedirs(os.path.dirname(persist_path), exist_ok=True)
 
 # ---------------------------
 # Session state
 # ---------------------------
-if "vectorstore" not in st.session_state:
-    st.session_state.vectorstore = None
+if "chats" not in st.session_state:
+    # chats = {chat_id: {"name": str, "vectorstore": FAISS, "history": []}}
+    st.session_state.chats = {}
 
-if "last_uploaded_name" not in st.session_state:
-    st.session_state.last_uploaded_name = None
+if "active_chat" not in st.session_state:
+    st.session_state.active_chat = None
 
-if "history" not in st.session_state:
-    st.session_state.history = []
+embeddings = HuggingFaceEmbeddings(model_name=hf_model)
 
 # ---------------------------
 # Helpers
 # ---------------------------
-@st.cache_resource(show_spinner=False)
-def load_embeddings(model_name: str):
-    # Use local sentence-transformers embedding model (no external API)
-    return HuggingFaceEmbeddings(model_name=model_name)
-
 def df_to_documents(df: pd.DataFrame) -> List[Document]:
-    # Convert each row to a single text document; adjust as needed for your CSV schema
     texts = []
-    for _, row in df.iterrows():
-        # join column_name: value pairs
+    for idx, row in df.iterrows():
         parts = [f"{col}: {row[col]}" for col in df.columns if pd.notna(row[col])]
         txt = " | ".join(parts)
-        texts.append(Document(page_content=txt, metadata={"source_row": _.__str__()}))
+        texts.append(Document(page_content=txt, metadata={"row": str(idx)}))
     return texts
 
-def build_faiss_from_df(df: pd.DataFrame, embeddings, chunk_size: int, chunk_overlap: int) -> FAISS:
+def build_faiss_from_df(df: pd.DataFrame) -> FAISS:
     docs = df_to_documents(df)
-
-    # split into chunks (so long description rows get chunked)
     splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    splitted_texts = []
+    splitted = []
     for d in docs:
-        splitted_texts.extend([Document(page_content=t, metadata=d.metadata) for t in splitter.split_text(d.page_content)])
-
-    vs = FAISS.from_documents(splitted_texts, embeddings)
-    return vs
-
-def safe_persist(vectorstore: FAISS, path: str):
-    # FAISS.save_local will overwrite the directory contents if called
-    vectorstore.save_local(path)
-
-def safe_load(path: str, embeddings) -> FAISS | None:
-    if os.path.exists(path) and os.path.isdir(path):
-        try:
-            return FAISS.load_local(path, embeddings)
-        except Exception as e:
-            st.warning(f"Could not load saved FAISS index: {e}")
-            return None
-    return None
+        splitted.extend([Document(page_content=t, metadata=d.metadata) for t in splitter.split_text(d.page_content)])
+    return FAISS.from_documents(splitted, embeddings)
 
 # ---------------------------
-# Ingestion area
+# Upload + New Chat
 # ---------------------------
-st.subheader("1) Upload CSV (every upload creates a fresh FAISS index)")
-left, right = st.columns([2,1])
+st.subheader("1) Upload CSV to start a new chat")
+uploaded = st.file_uploader("Upload CSV", type=["csv"], key="file_uploader")
 
-with left:
-    uploaded = st.file_uploader("Upload CSV", type=["csv"])
-    csv_path = st.text_input("...or path to CSV on the server (optional)", value="")
-
-with right:
-    reindex_btn = st.button("Index / Re-index", type="primary", use_container_width=True)
-    load_saved_btn = st.button("Load saved FAISS (if exists)", use_container_width=True)
-
-embeddings = load_embeddings(hf_model)
-
-# When user chooses to index (or uploads and clicks reindex), rebuild fresh
-def ingest_and_build(file_like):
+if uploaded:
     try:
-        df = pd.read_csv(file_like)
+        df = pd.read_csv(uploaded)
+        if not df.empty:
+            vs = build_faiss_from_df(df)
+            chat_id = str(len(st.session_state.chats) + 1)
+            chat_name = getattr(uploaded, "name", f"Chat {chat_id}")
+            st.session_state.chats[chat_id] = {
+                "name": chat_name,
+                "vectorstore": vs,
+                "history": []
+            }
+            st.session_state.active_chat = chat_id
+            st.success(f"✅ Created new chat with `{chat_name}`")
+        else:
+            st.error("Uploaded CSV is empty.")
     except Exception as e:
         st.error(f"Failed to read CSV: {e}")
-        return None
-
-    if df.empty:
-        st.error("CSV is empty.")
-        return None
-
-    with st.spinner("Building embeddings and FAISS index..."):
-        vs = build_faiss_from_df(df, embeddings, chunk_size, chunk_overlap)
-
-        # persist if requested
-        if persist_index:
-            try:
-                safe_persist(vs, persist_path)
-                st.info(f"Persisted FAISS to {persist_path}")
-            except Exception as e:
-                st.warning(f"Failed to persist index: {e}")
-
-    return vs
-
-# Decide action: index from upload, index from path, or load existing
-if reindex_btn:
-    # prefer file-like upload if present
-    if uploaded is not None:
-        st.session_state.vectorstore = ingest_and_build(uploaded)
-        st.session_state.last_uploaded_name = getattr(uploaded, "name", str(time.time()))
-        st.session_state.history = []
-        st.success("Indexed uploaded CSV; chat context reset.")
-    elif csv_path:
-        if os.path.exists(csv_path):
-            st.session_state.vectorstore = ingest_and_build(csv_path)
-            st.session_state.last_uploaded_name = csv_path
-            st.session_state.history = []
-            st.success("Indexed CSV from path; chat context reset.")
-        else:
-            st.error("Provided csv_path does not exist.")
-    else:
-        st.error("No CSV provided. Upload a file or provide a local path.")
-
-# Allow explicit loading of previously saved FAISS (only used when user wants it)
-if load_saved_btn:
-    loaded = safe_load(persist_path, embeddings)
-    if loaded:
-        st.session_state.vectorstore = loaded
-        st.session_state.last_uploaded_name = f"loaded:{persist_path}"
-        st.session_state.history = []
-        st.success("Loaded persisted FAISS index and reset chat.")
-    else:
-        st.warning("No persisted FAISS index found or failed to load.")
-
-# If user uploaded a file but didn't press reindex yet, show preview and offer to index
-if uploaded is not None and not reindex_btn:
-    st.info(f"Detected uploaded file: {getattr(uploaded, 'name', 'uploaded.csv')}. Press **Index / Re-index** to build a fresh index from it.")
-    st.dataframe(pd.read_csv(uploaded).head(5))
-
-# Also allow loading persisted index automatically only if no upload and no reindex clicked
-if (uploaded is None and not reindex_btn and st.session_state.vectorstore is None and persist_index):
-    # Try to auto-load only if user asked to persist and no upload occurred and there is no vectorstore in session
-    maybe = safe_load(persist_path, embeddings)
-    if maybe:
-        st.session_state.vectorstore = maybe
-        st.session_state.last_uploaded_name = f"auto_loaded:{persist_path}"
-        st.info("Auto-loaded persisted FAISS index (no new CSV uploaded).")
 
 # ---------------------------
-# Chat UI
+# Switch between chats
 # ---------------------------
-st.subheader("2) Chat with the current CSV (fresh index only)")
-if st.session_state.vectorstore is None:
-    st.info("No FAISS vectorstore in memory. Upload a CSV and press 'Index / Re-index' or load a saved index.")
+if st.session_state.chats:
+    chat_options = {cid: chat["name"] for cid, chat in st.session_state.chats.items()}
+    chosen = st.selectbox("Active Chat", options=list(chat_options.keys()), format_func=lambda cid: chat_options[cid])
+    st.session_state.active_chat = chosen
+
+    # enforce max 5 chats
+    if len(st.session_state.chats) > 5:
+        oldest = list(st.session_state.chats.keys())[0]
+        del st.session_state.chats[oldest]
+        st.info("♻️ Oldest chat removed (limit: 5).")
+
+# ---------------------------
+# Chat Area
+# ---------------------------
+st.subheader("2) Chat with your CSV")
+
+if not st.session_state.active_chat:
+    st.info("Upload a CSV to start chatting.")
 else:
-    retriever = st.session_state.vectorstore.as_retriever(search_kwargs={"k": k})
+    chat = st.session_state.chats[st.session_state.active_chat]
+    retriever = chat["vectorstore"].as_retriever(search_kwargs={"k": k})
 
-    # Prepare LLM
     if google_api_key:
         os.environ["GOOGLE_API_KEY"] = google_api_key
-    llm = None
     try:
         llm = ChatGoogleGenerativeAI(model=google_model, temperature=temperature)
     except Exception as e:
-        st.warning(f"Could not initialize Gemini LLM (answers will be retrieval-only): {e}")
+        st.warning(f"Could not initialize Gemini LLM: {e}")
         llm = None
 
-    user_input = st.text_input("Ask a question about your uploaded CSV", value="")
-    ask_btn = st.button("Ask")
+    # Conversation UI
+    for turn in chat["history"]:
+        if turn["role"] == "user":
+            st.markdown(f"**You:** {turn['content']}")
+        else:
+            st.markdown(f"**Assistant:** {turn['content']}")
 
-    if ask_btn and user_input.strip():
-        # append user turn
-        st.session_state.history.append({"role": "user", "content": user_input})
+    # modern chat input
+    user_input = st.chat_input("Ask something about this CSV...")
+    if user_input:
+        chat["history"].append({"role": "user", "content": user_input})
 
-        # retrieval
         docs = []
         try:
             docs = retriever.get_relevant_documents(user_input)
         except Exception as e:
             st.warning(f"Retrieval error: {e}")
 
-        # build context string from retrieved docs
         context_blocks = []
         for d in docs:
-            meta = d.metadata or {}
-            snippet = d.page_content[:800]
-            context_blocks.append(f"- {meta.get('source_row','?')}: {snippet}")
-
+            context_blocks.append(f"- Row {d.metadata.get('row','?')}: {d.page_content[:200]}")
         context_text = "\n".join(context_blocks)
 
         if llm is None:
-            # simple retrieval-only answer
             if context_text:
-                answer = "No generative model configured or LLM failed to init. Top matches:\n\n" + context_text
+                answer = "Top matches:\n" + context_text
             else:
-                answer = "No relevant context found and no LLM configured."
+                answer = "No relevant info found."
         else:
             system_prompt = (
-                "You are a factual product/CSV assistant. Answer ONLY from the provided CSV context snippets. "
-                "If the answer is not present, say you don't have that information."
+                "You are a CSV assistant. Answer ONLY using the provided CSV context. "
+                "If the answer is not present, say you don't know."
             )
             messages = [
                 SystemMessage(content=system_prompt),
@@ -246,36 +164,9 @@ else:
             except Exception as e:
                 answer = f"LLM error: {e}\n\nTop matches:\n{context_text}"
 
-        st.session_state.history.append({"role": "assistant", "content": answer})
-
-    # display chat
-    for turn in st.session_state.history:
-        role = turn["role"]
-        content = turn["content"]
-        if role == "user":
-            st.markdown(f"**You:** {content}")
-        else:
-            st.markdown(f"**Assistant:** {content}")
-
-    # Show citations / sources
-    with st.expander("🔎 Last retrieved context (top matches)"):
-        try:
-            # try to show context for last user question
-            if st.session_state.history:
-                last_user = next((t for t in reversed(st.session_state.history) if t["role"]=="user"), None)
-                if last_user:
-                    docs = retriever.get_relevant_documents(last_user["content"])
-                    for i, d in enumerate(docs, start=1):
-                        meta = d.metadata or {}
-                        st.markdown(f"**{i}. Row:** {meta.get('source_row', '?')}")
-                        st.code(d.page_content[:800])
-                else:
-                    st.write("No queries yet.")
-            else:
-                st.write("No conversation yet.")
-        except Exception as e:
-            st.write(f"(Could not fetch citations: {e})")
+        chat["history"].append({"role": "assistant", "content": answer})
+        st.rerun()  # refresh UI to show new message
 
 # Footer
 st.divider()
-st.caption("Built with Streamlit — this app rebuilds FAISS when you upload a CSV so answers always come from the latest file.")
+st.caption("Built with Streamlit — Supports up to 5 parallel chats (one per CSV).")
