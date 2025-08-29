@@ -28,9 +28,6 @@ if INDEX_NAME not in pc.list_indexes().names():
     )
 index = pc.Index(INDEX_NAME)
 
-# Embeddings model
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-
 # ---- Initialize session state ----
 if "chats" not in st.session_state:
     st.session_state.chats = {}  # {chat_id: {"name": str, "messages": [], "qa": chain, "pdf_uploaded": bool, "namespace": str}}
@@ -114,6 +111,8 @@ if st.session_state.active_chat:
                     progress_bar.progress(0.6)  # 60% after splitting
 
                     # Embed and store in Pinecone with namespace
+                    # Initialize embeddings with explicit CPU device
+                    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", model_kwargs={"device": "cpu"})
                     vectorstore = PineconeVectorStore.from_documents(
                         texts,
                         embedding=embeddings,
