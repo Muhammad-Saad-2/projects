@@ -1,172 +1,80 @@
-# app.py
-import os
-from typing import List
-import pandas as pd
 import streamlit as st
-
+import pandas as pd
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.schema import Document
 from langchain.vectorstores import FAISS
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
+from langchain.document_loaders import DataFrameLoader
+from dotenv import load_dotenv
+import os
 
+# Load environment variables
+load_dotenv()
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-google_api_key = st.secrets.get("GOOGLE_API_KEY")
+# Streamlit App
+st.set_page_config(page_title="Chat with your CSV", layout="wide")
+st.title("📊 Chat with your CSV")
 
-# ---------------------------
-# Config / UI
-# ---------------------------
-st.set_page_config(page_title="CSV Chatbot (multi-chat)", layout="wide", page_icon="🤖")
-st.title("📊 CSV Chatbot — Multiple Chats (FAISS per upload)")
+# Session states
+if "chain" not in st.session_state:
+    st.session_state.chain = None
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-with st.sidebar:
-    st.header("Settings")
-    hf_model = "all-MiniLM-L6-v2"
-    chunk_size = st.number_input("Chunk size", min_value=256, max_value=4000, value=1000, step=100)
-    chunk_overlap = st.number_input("Chunk overlap", min_value=0, max_value=1000, value=200, step=50)
-    k = st.number_input("Retriever k (top matches)", min_value=1, max_value=10, value=4, step=1)
+# File uploader
+uploaded_file = st.file_uploader("Upload a CSV file", type="csv")
 
-    st.divider()
-    st.subheader("Google Gemini LLM")
-    google_model = "gemini-2.5-flash"
-    temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05)
+if uploaded_file is not None:
+    # Load CSV into DataFrame
+    df = pd.read_csv(uploaded_file)
 
-# ---------------------------
-# Session state
-# ---------------------------
-if "chats" not in st.session_state:
-    # chats = {chat_id: {"name": str, "vectorstore": FAISS, "history": []}}
-    st.session_state.chats = {}
+    # Show preview
+    with st.expander("🔎 Preview Data"):
+        st.dataframe(df.head())
 
-if "active_chat" not in st.session_state:
-    st.session_state.active_chat = None
+    # Convert DataFrame into LangChain Documents
+    loader = DataFrameLoader(df, page_content_column=df.columns[0])  # pick first column as content
+    documents = loader.load()
 
-embeddings = HuggingFaceEmbeddings(model_name=hf_model)
+    # Split text into chunks
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    docs = text_splitter.split_documents(documents)
 
-# ---------------------------
-# Helpers
-# ---------------------------
-def df_to_documents(df: pd.DataFrame) -> List[Document]:
-    texts = []
-    for idx, row in df.iterrows():
-        parts = [f"{col}: {row[col]}" for col in df.columns if pd.notna(row[col])]
-        txt = " | ".join(parts)
-        texts.append(Document(page_content=txt, metadata={"row": str(idx)}))
-    return texts
+    # Embeddings
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=GOOGLE_API_KEY)
 
-def build_faiss_from_df(df: pd.DataFrame) -> FAISS:
-    docs = df_to_documents(df)
-    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap)
-    splitted = []
-    for d in docs:
-        splitted.extend([Document(page_content=t, metadata=d.metadata) for t in splitter.split_text(d.page_content)])
-    return FAISS.from_documents(splitted, embeddings)
+    # Vector Store (new FAISS for each upload)
+    vectorstore = FAISS.from_documents(docs, embeddings)
 
-# ---------------------------
-# Upload + New Chat
-# ---------------------------
-st.subheader("1) Upload CSV to start a new chat")
-uploaded = st.file_uploader("Upload CSV", type=["csv"], key="file_uploader")
+    # Memory for chat
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-if uploaded:
-    try:
-        df = pd.read_csv(uploaded)
-        if not df.empty:
-            vs = build_faiss_from_df(df)
-            chat_id = str(len(st.session_state.chats) + 1)
-            chat_name = getattr(uploaded, "name", f"Chat {chat_id}")
-            st.session_state.chats[chat_id] = {
-                "name": chat_name,
-                "vectorstore": vs,
-                "history": []
-            }
-            st.session_state.active_chat = chat_id
-            st.success(f"✅ Created new chat with `{chat_name}`")
-        else:
-            st.error("Uploaded CSV is empty.")
-    except Exception as e:
-        st.error(f"Failed to read CSV: {e}")
+    # LLM
+    llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=GOOGLE_API_KEY)
 
-# ---------------------------
-# Switch between chats
-# ---------------------------
-if st.session_state.chats:
-    chat_options = {cid: chat["name"] for cid, chat in st.session_state.chats.items()}
-    chosen = st.selectbox("Active Chat", options=list(chat_options.keys()), format_func=lambda cid: chat_options[cid])
-    st.session_state.active_chat = chosen
+    # Conversational chain
+    st.session_state.chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=vectorstore.as_retriever(),
+        memory=memory
+    )
 
-    # enforce max 5 chats
-    if len(st.session_state.chats) > 5:
-        oldest = list(st.session_state.chats.keys())[0]
-        del st.session_state.chats[oldest]
-        st.info("♻️ Oldest chat removed (limit: 5).")
+    st.success("✅ CSV processed! You can now ask questions about it.")
 
-# ---------------------------
-# Chat Area
-# ---------------------------
-st.subheader("2) Chat with your CSV")
+# Chat Interface
+if st.session_state.chain:
+    query = st.chat_input("Ask something about your CSV...")
+    if query:
+        result = st.session_state.chain({"question": query})
+        answer = result["answer"]
 
-if not st.session_state.active_chat:
-    st.info("Upload a CSV to start chatting.")
-else:
-    chat = st.session_state.chats[st.session_state.active_chat]
-    retriever = chat["vectorstore"].as_retriever(search_kwargs={"k": k})
+        # Save chat history
+        st.session_state.chat_history.append(("You", query))
+        st.session_state.chat_history.append(("Bot", answer))
 
-    if google_api_key:
-        os.environ["GOOGLE_API_KEY"] = google_api_key
-    try:
-        llm = ChatGoogleGenerativeAI(model=google_model, temperature=temperature)
-    except Exception as e:
-        st.warning(f"Could not initialize Gemini LLM: {e}")
-        llm = None
-
-    # Conversation UI
-    for turn in chat["history"]:
-        if turn["role"] == "user":
-            st.markdown(f"**You:** {turn['content']}")
-        else:
-            st.markdown(f"**Assistant:** {turn['content']}")
-
-    # modern chat input
-    user_input = st.chat_input("Ask something about this CSV...")
-    if user_input:
-        chat["history"].append({"role": "user", "content": user_input})
-
-        docs = []
-        try:
-            docs = retriever.get_relevant_documents(user_input)
-        except Exception as e:
-            st.warning(f"Retrieval error: {e}")
-
-        context_blocks = []
-        for d in docs:
-            context_blocks.append(f"- Row {d.metadata.get('row','?')}: {d.page_content[:200]}")
-        context_text = "\n".join(context_blocks)
-
-        if llm is None:
-            if context_text:
-                answer = "Top matches:\n" + context_text
-            else:
-                answer = "No relevant info found."
-        else:
-            system_prompt = (
-                "You are a CSV assistant. Answer ONLY using the provided CSV context. "
-                "If the answer is not present, say you don't know."
-            )
-            messages = [
-                SystemMessage(content=system_prompt),
-                HumanMessage(content=f"Context:\n{context_text}\n\nQuestion: {user_input}")
-            ]
-            try:
-                resp = llm.invoke(messages)
-                answer = resp.content
-            except Exception as e:
-                answer = f"LLM error: {e}\n\nTop matches:\n{context_text}"
-
-        chat["history"].append({"role": "assistant", "content": answer})
-        st.rerun()  # refresh UI to show new message
-
-# Footer
-st.divider()
-st.caption("Built with Streamlit — Supports up to 5 parallel chats (one per CSV).")
+    # Display chat
+    for speaker, msg in st.session_state.chat_history:
+        with st.chat_message("user" if speaker == "You" else "assistant"):
+            st.markdown(msg)
