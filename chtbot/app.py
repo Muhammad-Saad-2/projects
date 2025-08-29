@@ -1,6 +1,7 @@
 import os
 import streamlit as st
 import pandas as pd
+import asyncio
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_community.vectorstores import FAISS
@@ -59,19 +60,26 @@ if st.session_state.active_chat:
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
             texts = text_splitter.split_text("\n".join(df.astype(str).apply(lambda row: " | ".join(row), axis=1)))
 
-            embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-            vectorstore = FAISS.from_texts(texts, embeddings)
+            # Ensure event loop for async operations
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
 
-            memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+            try:
+                embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+                vectorstore = FAISS.from_texts(texts, embeddings)
 
-            qa = ConversationalRetrievalChain.from_llm(
-                llm=ChatGoogleGenerativeAI(model="gemini-2.0-flash"),
-                retriever=vectorstore.as_retriever(),
-                memory=memory
-            )
+                memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-            chat["qa"] = qa
-            st.success("✅ CSV processed and embeddings stored for this chat!")
+                qa = ConversationalRetrievalChain.from_llm(
+                    llm=ChatGoogleGenerativeAI(model="gemini-2.0-flash"),
+                    retriever=vectorstore.as_retriever(),
+                    memory=memory
+                )
+
+                chat["qa"] = qa
+                st.success("✅ CSV processed and embeddings stored for this chat!")
+            finally:
+                loop.close()
 
     else:
         # Show chat history
@@ -86,8 +94,14 @@ if st.session_state.active_chat:
             with st.chat_message("user"):
                 st.markdown(user_input)
 
-            response = chat["qa"].invoke({"question": user_input})
-            answer = response["answer"]
+            # Run async operation in the event loop
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                response = loop.run_until_complete(chat["qa"].ainvoke({"question": user_input}))
+                answer = response["answer"]
+            finally:
+                loop.close()
 
             chat["messages"].append({"role": "assistant", "content": answer})
             with st.chat_message("assistant"):
