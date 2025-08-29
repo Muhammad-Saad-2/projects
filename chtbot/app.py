@@ -10,7 +10,7 @@ import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema import Document
 from langchain.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
@@ -26,7 +26,7 @@ st.title("CSV Chatbot — fresh FAISS per upload")
 
 with st.sidebar:
     st.header("Settings")
-    hf_model = st.write("Embedding model (sentence-transformers)", value="all-MiniLM-L6-v2")
+    hf_model = "all-MiniLM-L6-v2"
     chunk_size = st.number_input("Chunk size", min_value=256, max_value=4000, value=1000, step=100)
     chunk_overlap = st.number_input("Chunk overlap", min_value=0, max_value=1000, value=200, step=50)
     k = st.number_input("Retriever k (top matches)", min_value=1, max_value=10, value=4, step=1)
@@ -35,7 +35,7 @@ with st.sidebar:
 
     st.divider()
     st.subheader("Google Gemini LLM")
-    google_model = st.write("Gemini model", value="gemini-2.5-flash")
+    google_model = "gemini-2.5-flash"
     temperature = st.slider("Temperature", 0.0, 1.0, 0.2, 0.05)
     # google_api_key = st.text_input("GOOGLE_API_KEY (or set as env var)", value=os.getenv("GOOGLE_API_KEY") or "")
 
@@ -233,7 +233,7 @@ else:
                 answer = "No relevant context found and no LLM configured."
         else:
             system_prompt = (
-                "You are a factual product/CSV assistant. Answer ONLY from the provided context snippets. "
+                "You are a factual product/CSV assistant. Answer ONLY from the provided CSV context snippets. "
                 "If the answer is not present, say you don't have that information."
             )
             messages = [
