@@ -155,6 +155,8 @@ if st.session_state.active_chat:
                             index_name=INDEX_NAME,
                             namespace=chat["namespace"]
                         )
+                        # Wait for indexing to complete in serverless Pinecone
+                        time.sleep(10)  # Adjust based on document size; may need more for larger PDFs
                         progress_bar.progress(0.9)  # 90% after embedding
                     except Exception as e:
                         st.error(f"Failed to load embeddings: {str(e)}. Please ensure you have a Hugging Face token in secrets.toml and try again.")
@@ -166,8 +168,9 @@ if st.session_state.active_chat:
                     # Custom prompt to ensure answers are based on PDF context
                     system_prompt = (
                         "You are an assistant for question-answering tasks. "
-                        "Use the following pieces of retrieved context from the uploaded PDF to answer the question. "
-                        "If the answer is not in the context, say that you don't know. "
+                        "Use ONLY the following pieces of retrieved context from the uploaded PDF to answer the question. "
+                        "Do not use any external knowledge or make up information. "
+                        "If the answer is not explicitly in the context, or if no context is provided, respond with 'I don't know based on the provided PDF.' "
                         "Keep the answer concise and relevant."
                         "\n\n{context}"
                     )
@@ -182,7 +185,7 @@ if st.session_state.active_chat:
                     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
                     qa = ConversationalRetrievalChain.from_llm(
                         llm=ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=GOOGLE_API_KEY),
-                        retriever=vectorstore.as_retriever(),
+                        retriever=vectorstore.as_retriever(search_kwargs={"k": 10}),  # Increased k for more context
                         memory=memory,
                         combine_docs_chain_kwargs={"prompt": qa_prompt}
                     )
