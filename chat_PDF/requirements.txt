@@ -1,0 +1,11 @@
+
+streamlit
+langchain
+huggingface
+sentence-transformers
+langchain-community
+langchain-google-genai
+pinecone
+pandas==2.2.2
+langchain-pinecone
+langchain-huggingface
