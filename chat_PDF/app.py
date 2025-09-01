@@ -120,7 +120,7 @@ if st.session_state.active_chat:
                             model_name="sentence-transformers/all-MiniLM-L6-v2",
                             model_kwargs={"device": "cpu"},
                             cache_folder="/tmp/hf_cache",  # Custom cache to persist across builds
-                            token=HF_TOKEN  # Authenticate to avoid rate limits
+                            # token=HF_TOKEN  # Authenticate to avoid rate limits
                         )
                         vectorstore = PineconeVectorStore.from_documents(
                             texts,
