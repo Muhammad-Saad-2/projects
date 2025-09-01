@@ -5,12 +5,13 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
-# from langchain.chains import conversational_retrieval, ConversationalRetrievalChain
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.prompts import ChatPromptTemplate
 from pinecone import Pinecone, ServerlessSpec
 import uuid
+import time
 
 # Load secrets
 load_dotenv()
@@ -34,7 +35,7 @@ index = pc.Index(INDEX_NAME)
 
 # ---- Initialize session state ----
 if "chats" not in st.session_state:
-    st.session_state.chats = {}  # {chat_id: {"name": str, "messages": [], "qa": chain, "pdf_uploaded": bool, "namespace": str}}
+    st.session_state.chats = {}  # {chat_id: {"name": str, "messages": [], "qa": chain, "pdf_uploaded": bool, "namespace": str, "pinned": bool, "created_at": float}}
 if "active_chat" not in st.session_state:
     st.session_state.active_chat = None
 if "chat_counter" not in st.session_state:
@@ -50,7 +51,9 @@ def create_new_chat():
         "messages": [],
         "qa": None,
         "pdf_uploaded": False,
-        "namespace": namespace
+        "namespace": namespace,
+        "pinned": False,
+        "created_at": time.time()
     }
     st.session_state.active_chat = chat_id
 
@@ -64,22 +67,47 @@ def delete_chat(chat_id):
     if st.session_state.active_chat == chat_id:
         st.session_state.active_chat = None
 
-# ---- Sidebar: Chat management (like modern apps: New Chat at top) ----
+# ---- Helper to pin/unpin a chat ----
+def toggle_pin(chat_id):
+    st.session_state.chats[chat_id]["pinned"] = not st.session_state.chats[chat_id]["pinned"]
+
+# ---- Helper to select a chat ----
+def select_chat(chat_id):
+    st.session_state.active_chat = chat_id
+
+# ---- Sidebar: Chat management ----
 with st.sidebar:
     st.button("➕ New Chat", on_click=create_new_chat, key="new_chat_top")
 
     st.markdown("### Your Chats")
-    for chat_id in list(st.session_state.chats.keys()):
-        chat = st.session_state.chats[chat_id]
-        col1, col2 = st.columns([3, 1])
-        new_name = col1.text_input("Rename", value=chat["name"], key=f"rename_{chat_id}")
-        if new_name != chat["name"]:
-            chat["name"] = new_name
-        if col2.button("🗑️", key=f"delete_{chat_id}"):
-            delete_chat(chat_id)
-            st.rerun()
-        if st.button(chat["name"], key=chat_id):
-            st.session_state.active_chat = chat_id
+    
+    # Sort chats: pinned first, then by creation time descending
+    sorted_chats = sorted(st.session_state.chats.items(), key=lambda x: (-x[1]["pinned"], -x[1]["created_at"]))
+    
+    for chat_id, chat in sorted_chats:
+        with st.container():
+            col1, col2 = st.columns([0.8, 0.2])
+            with col1:
+                if st.button(chat["name"], key=f"select_{chat_id}"):
+                    select_chat(chat_id)
+            with col2:
+                with st.popover("⋮", use_container_width=True):
+                    # Rename option
+                    new_name = st.text_input("Rename", value=chat["name"], key=f"rename_input_{chat_id}")
+                    if st.button("Save Rename", key=f"save_rename_{chat_id}"):
+                        chat["name"] = new_name
+                        st.rerun()
+                    
+                    # Pin option
+                    pin_label = "Unpin" if chat["pinned"] else "Pin"
+                    if st.button(pin_label, key=f"pin_btn_{chat_id}"):
+                        toggle_pin(chat_id)
+                        st.rerun()
+                    
+                    # Delete option
+                    if st.button("Delete", key=f"delete_btn_{chat_id}"):
+                        delete_chat(chat_id)
+                        st.rerun()
 
 # ---- Main area ----
 if st.session_state.active_chat:
@@ -91,7 +119,7 @@ if st.session_state.active_chat:
         uploaded_file = st.file_uploader("Upload a PDF for this chat", type="pdf", key=f"upload_{st.session_state.active_chat}")
         if uploaded_file:
             if chat["pdf_uploaded"]:
-                st.error("Per PDF per session allowed. To chat with another PDF, create a new chat from the sidebar.")
+                st.error("One PDF per chat allowed. To chat with another PDF, create a new chat from the sidebar.")
             else:
                 # Save PDF name as chat name
                 chat["name"] = uploaded_file.name
@@ -120,7 +148,6 @@ if st.session_state.active_chat:
                             model_name="sentence-transformers/all-MiniLM-L6-v2",
                             model_kwargs={"device": "cpu"},
                             cache_folder="/tmp/hf_cache",  # Custom cache to persist across builds
-                            # token=HF_TOKEN  # Authenticate to avoid rate limits
                         )
                         vectorstore = PineconeVectorStore.from_documents(
                             texts,
@@ -136,12 +163,28 @@ if st.session_state.active_chat:
                         st.rerun()
                         raise
 
-                    # Setup memory and chain
+                    # Custom prompt to ensure answers are based on PDF context
+                    system_prompt = (
+                        "You are an assistant for question-answering tasks. "
+                        "Use the following pieces of retrieved context from the uploaded PDF to answer the question. "
+                        "If the answer is not in the context, say that you don't know. "
+                        "Keep the answer concise and relevant."
+                        "\n\n{context}"
+                    )
+                    qa_prompt = ChatPromptTemplate.from_messages(
+                        [
+                            ("system", system_prompt),
+                            ("human", "{question}"),
+                        ]
+                    )
+
+                    # Setup memory and chain with custom prompt
                     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
                     qa = ConversationalRetrievalChain.from_llm(
                         llm=ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=GOOGLE_API_KEY),
                         retriever=vectorstore.as_retriever(),
-                        memory=memory
+                        memory=memory,
+                        combine_docs_chain_kwargs={"prompt": qa_prompt}
                     )
                     chat["qa"] = qa
                     progress_bar.progress(1.0)  # Complete
@@ -172,6 +215,3 @@ if st.session_state.active_chat:
                 st.markdown(answer)
 else:
     st.info("Click **New Chat** in the sidebar to start a session.")
-
-
-
