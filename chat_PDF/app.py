@@ -18,6 +18,8 @@ GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", os.getenv("GOOGLE_API_KEY"))
 PINECONE_API_KEY = st.secrets.get("PINECONE_API_KEY", os.getenv("PINECONE_API_KEY"))
 HF_TOKEN = st.secrets.get("HF_TOKEN", os.getenv("HF_TOKEN"))  # Hugging Face token
 
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = HF_TOKEN
+
 # Pinecone setup (shared index with namespaces)
 pc = Pinecone(api_key=PINECONE_API_KEY)
 INDEX_NAME = "rag-chatbot"
