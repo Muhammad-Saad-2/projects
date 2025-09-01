@@ -5,7 +5,8 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from langchain.chains import ConversationalRetrievalChain
+# from langchain.chains import conversational_retrieval, ConversationalRetrievalChain
+from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pinecone import Pinecone, ServerlessSpec
@@ -15,6 +16,7 @@ import uuid
 load_dotenv()
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", os.getenv("GOOGLE_API_KEY"))
 PINECONE_API_KEY = st.secrets.get("PINECONE_API_KEY", os.getenv("PINECONE_API_KEY"))
+print(PINECONE_API_KEY)
 HF_TOKEN = st.secrets.get("HF_TOKEN", os.getenv("HF_TOKEN"))  # Hugging Face token
 
 # Pinecone setup (shared index with namespaces)
@@ -74,7 +76,7 @@ with st.sidebar:
             chat["name"] = new_name
         if col2.button("🗑️", key=f"delete_{chat_id}"):
             delete_chat(chat_id)
-            st.experimental_rerun()
+            st.rerun()
         if st.button(chat["name"], key=chat_id):
             st.session_state.active_chat = chat_id
 
@@ -130,7 +132,7 @@ if st.session_state.active_chat:
                         st.error(f"Failed to load embeddings: {str(e)}. Please ensure you have a Hugging Face token in secrets.toml and try again.")
                         chat["pdf_uploaded"] = False
                         os.remove(temp_pdf_path)
-                        st.experimental_rerun()
+                        st.rerun()
                         raise
 
                     # Setup memory and chain
@@ -145,7 +147,7 @@ if st.session_state.active_chat:
 
                     st.success("✅ PDF processed and embeddings stored for this chat!")
                     os.remove(temp_pdf_path)  # Clean up temp file
-                    st.experimental_rerun()  # Refresh UI
+                    st.rerun()  # Refresh UI
 
     else:
         # Show chat history
@@ -169,3 +171,6 @@ if st.session_state.active_chat:
                 st.markdown(answer)
 else:
     st.info("Click **New Chat** in the sidebar to start a session.")
+
+
+
