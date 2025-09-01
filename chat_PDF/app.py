@@ -16,7 +16,6 @@ import uuid
 load_dotenv()
 GOOGLE_API_KEY = st.secrets.get("GOOGLE_API_KEY", os.getenv("GOOGLE_API_KEY"))
 PINECONE_API_KEY = st.secrets.get("PINECONE_API_KEY", os.getenv("PINECONE_API_KEY"))
-print(PINECONE_API_KEY)
 HF_TOKEN = st.secrets.get("HF_TOKEN", os.getenv("HF_TOKEN"))  # Hugging Face token
 
 # Pinecone setup (shared index with namespaces)
