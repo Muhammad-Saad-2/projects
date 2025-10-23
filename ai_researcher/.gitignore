@@ -4,4 +4,4 @@
 
 .mypy_cache/
 
-./app/data
+app/data/
