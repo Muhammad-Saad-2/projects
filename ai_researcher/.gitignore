@@ -1,0 +1,7 @@
+.env
+
+.venv
+
+.mypy_cache/
+
+./app/data

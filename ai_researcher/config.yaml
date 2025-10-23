@@ -1,0 +1,14 @@
+vector_db:
+  type: faiss
+  path: ./app/data/vector_store/index.faiss
+
+llm:
+  provider: gemini
+  moidel: gemini-2.5-flash
+
+embedding_model:
+  model: sentence-transformers/all-MiniLM-L6-v2
+
+arxiv:
+  max_results: 5
+  sort_by: relevance
