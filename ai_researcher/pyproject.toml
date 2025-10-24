@@ -24,3 +24,8 @@ dependencies = [
     "typing-extensions>=4.15.0",
 ]
 
+
+[mypy]
+
+files = app .
+
