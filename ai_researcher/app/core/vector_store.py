@@ -1,49 +1,13 @@
-# import chromadb
-# from chromadb.utils import embedding_functions
-# from sentence_transformers import SentenceTransformer
-
-# local_model = SentenceTransformer('all-MiniLM-L6-v2')
-
-# embedder = embedding_functions.SentenceTransformerEmbeddingFunction(
-#     model_name="all-MiniLM-L6-v2",
-#     device= "cpu",
-
-# )
-
-
-# chroma_client = chromadb.Client()
-
-# collection = chroma_client.create_collection(
-#     name="my_collection",
-
-#     embedding_function=embedder # type: ignore[arg-type]
-# )
-
-
-# collection.add(
-#     ids= ["1", "2", "3"],
-#     documents = [
-#         "This the document about  cats",
-#         "This is the docuemnt about dogs",
-#         "This document is about birds"
-#     ],
-# )
-
-# results = collection.query(
-#     query_texts=["This is a document about felines"],
-#     n_results=2
-# )
-
-# print(results)
-
-
 import os 
 import json
 from xml.parsers.expat import model
 import numpy as np
 import faiss  #type: ignore
 from typing import List, Tuple, Any, Dict
-from embeddings import EmbeddingService
+from app.core.embedding_service import EmbeddingService 
+from app.utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 #path setup for FAISS index and metadata storga 
@@ -70,21 +34,25 @@ class VectorStore:
             index = faiss.read_index(self.index_path)
             with open(self.metadata_path, "r", encoding="utf-8") as f:
                 metadata = json.load(f)
+            logger.info(f"Loaded existing FAISS index with {len(metadata)} entries.")    
         else:
             index = faiss.IndexFlatL2(self.embedding_dim)
             metadata = []
+            logger.info("Created a new FAISS index.")
         return index, metadata
     
     
     
     def add_papers(self, title:str, content: str):
-        # chunks = self.chunk_document(content)
-        
-        # embeddings = self.model.encode(chunks, convert_to_numpy=True)
+        logger.info(f"Adding paper: {title}")
 
         chunks = self.embedding_service.chunk_document(content)
 
         embeddings = self.embedding_service.get_embeddings(chunks)
+
+        embeddings= np.asarray(embeddings, dtype=np.float32)
+        if embeddings.ndim == 1:
+            embeddings = embeddings.reshape(1, -1)
 
 
 
@@ -94,16 +62,20 @@ class VectorStore:
                 "chunk_id": i,
                 "content": chunk
             }
-            self.index.add(embeddings.astype(np.float32))
+            # self.index.add(embeddings.astype(np.float32))
+            self.index.add(np.array([embeddings[i]], dtype=np.float32)) #type: ignore
             self.metadata.append(meta)
+
+        logger.info(f"Added {len(chunks)} chunks for paper '{title}' to FAISS index.")
 
     def search(self, query: str, top_k: int = 3) -> List[Dict[str, str]]:
         if self.index.ntotal == 0:
+            logger.warning("Search attempted on empty FAISS index.")
             return []
 
         # query_vector = self.model.encode([query], convert_to_numpy=True)
         query_vector = self.embedding_service.get_embeddings([query])
-        distances, indices = self.index.search(query_vector.astype(np.float32), top_k)
+        distances, indices = self.index.search(query_vector.astype(np.float32), k=top_k) #type: ignore
 
         results = []
         for i, idx in enumerate(indices[0]):
@@ -112,6 +84,8 @@ class VectorStore:
                     "score": float(distances[0][i]),
                     "metadata": self.metadata[idx]
                 })
+
+        logger.info(f"Search completed. Found {len(results)} results.")
 
         return results
 
@@ -129,19 +103,23 @@ class VectorStore:
                 indent=2
             )
 
-            print("index and metadat saved succefully")
+            logger.info("FAISS index and metadata saved successfully.")
+    
+    def delete_index(self):
+        pass
 
 
 
-if __name__ ==  "__main__":
-    store = VectorStore()
+# if __name__ ==  "__main__":
+#     store = VectorStore()
 
 
-    text = """
-    Artificial neural networks (ANNs) are computing systems inspired by the biological neural networks.
-    These systems learn from data, making them capable of pattern recognition and decision making.
-    """
-    store.add_papers("Neural Networks Overview", text)
+#     text = """
+#     Artificial neural networks (ANNs) are computing systems inspired by the biological neural networks.
+#     These systems learn from data, making them capable of pattern recognition and decision making.
+#     """
+#     store.add_papers("Neural Networks Overview", text)
+#     store.save_index()
 
-    results = store.search("what are neural networks")
-    print(f"answer: {results}" )
+#     results = store.search("what are neural networks")
+#     print(f"answer: {results}" )
