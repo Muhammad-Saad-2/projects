@@ -1,0 +1,590 @@
+[2025-10-29 21:02:26] [INFO] [__main__]: Vector store initialized.
+[2025-10-29 21:02:26] [WARNING] [__main__]: Embedding failed — retrying...
+[2025-10-29 21:02:26] [ERROR] [__main__]: FAISS index not found!
+[2025-10-29 21:34:03] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-29 21:34:08] [INFO] [__main__]: Loaded existing FAISS index with 1 entries.
+[2025-10-29 21:34:08] [INFO] [__main__]: Adding paper: Neural Networks Overview
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Document chunked into 1 segments (chunk_size=500, overlap=50).
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-29 21:34:08] [INFO] [__main__]: Added 1 chunks for paper 'Neural Networks Overview' to FAISS index.
+[2025-10-29 21:34:08] [INFO] [__main__]: FAISS index and metadata saved successfully.
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-29 21:34:08] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-29 21:34:08] [INFO] [__main__]: Search completed. Found 3 results.
+[2025-10-30 00:46:08] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-30 00:46:08] [INFO] [__main__]: Fetching papers for query: 'large language models' (max_results=3)
+[2025-10-30 00:46:09] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-10-30 00:52:23] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-30 00:52:23] [INFO] [__main__]: Fetching papers for query: 'large language models' (max_results=3)
+[2025-10-30 00:52:24] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-10-30 14:23:51] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-30 14:23:51] [INFO] [__main__]: Fetching papers for query: 'large language models' (max_results=3)
+[2025-10-30 14:23:52] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-10-31 00:41:52] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:41:55] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:41:55] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:41:59] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:41:59] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 00:41:59] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:41:59] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 00:43:03] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:43:06] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:43:06] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:43:09] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:43:09] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 00:43:09] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:43:09] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 00:43:09] [INFO] [__main__]: 🔍 Searching vector database for query: 'what are convolutional neural newotworks'
+[2025-10-31 00:43:09] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-31 00:43:09] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-31 00:43:09] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-10-31 00:43:09] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-10-31 00:45:50] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:45:53] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:45:53] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:45:56] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:45:56] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 00:45:57] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:45:57] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 00:45:57] [INFO] [__main__]: 🔍 Searching vector database for query: 'what do you know about quantum mechanics'
+[2025-10-31 00:45:57] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-31 00:45:57] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-31 00:45:57] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-10-31 00:45:57] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-10-31 00:47:32] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:47:36] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:47:36] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 00:47:40] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 00:47:40] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 00:47:40] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:47:40] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 00:47:40] [INFO] [__main__]: 🔍 Searching vector database for query: 'what are quantum computers'
+[2025-10-31 00:47:40] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-31 00:47:40] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-31 00:47:40] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-10-31 00:47:40] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-10-31 00:49:08] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:49:08] [INFO] [__main__]: Fetching papers for query: 'large language models' (max_results=3)
+[2025-10-31 00:49:09] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-10-31 00:49:29] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 00:49:29] [INFO] [__main__]: Fetching papers for query: 'quantum mechanics ' (max_results=3)
+[2025-10-31 00:49:30] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-10-31 01:06:20] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 01:06:23] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 01:06:23] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 01:06:26] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 01:06:26] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 01:06:26] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 01:06:26] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 01:06:26] [INFO] [__main__]: 🔍 Searching vector database for query: 'what are quantum computers'
+[2025-10-31 01:06:26] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-31 01:06:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-31 01:06:27] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-10-31 01:06:27] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-10-31 18:35:00] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 18:35:07] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 18:35:07] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-10-31 18:35:14] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-10-31 18:35:14] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-10-31 18:35:14] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-10-31 18:35:14] [INFO] [__main__]: RAGService initialized successfully.
+[2025-10-31 18:35:14] [INFO] [__main__]: 🔍 Searching vector database for query: 'what are quantum computers'
+[2025-10-31 18:35:14] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-10-31 18:35:14] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-10-31 18:35:14] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-10-31 18:35:14] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-04 15:13:23] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:13:29] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:13:29] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:13:34] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:13:34] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-11-04 15:13:34] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:13:34] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 15:13:34] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 15:13:34] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:13:34] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:13:34] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 15:13:34] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-04 15:16:26] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:16:31] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:16:31] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:16:36] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:16:36] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 2 entries.
+[2025-11-04 15:16:36] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:16:36] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 15:16:36] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 15:16:36] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:16:36] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:16:36] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 15:16:36] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-04 15:16:36] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'quantum computers' (max_results=3)
+[2025-11-04 15:16:37] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 15:16:37] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:16:37] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:16:37] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:16:37] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:16:37] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:16:38] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:16:38] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-04 15:16:38] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-04 15:23:26] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:23:33] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:23:33] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:23:38] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:23:38] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 5 entries.
+[2025-11-04 15:23:38] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:23:38] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 15:23:38] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 15:23:38] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:23:38] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:23:38] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 15:23:38] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-04 15:23:38] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'quantum computers' (max_results=3)
+[2025-11-04 15:23:39] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:23:39] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:23:39] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-04 15:23:39] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-04 15:25:18] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:25:18] [INFO] [__main__]: Fetching papers for query: 'quantum mechanics ' (max_results=3)
+[2025-11-04 15:25:19] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 15:41:42] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:41:48] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:41:48] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:41:53] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 8 entries.
+[2025-11-04 15:41:53] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:41:53] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 15:41:53] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:41:53] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 15:41:53] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-04 15:41:53] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'quantum computers' (max_results=3)
+[2025-11-04 15:41:53] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:41:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:41:53] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-04 15:41:53] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-04 15:58:38] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:58:44] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:58:44] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 15:58:49] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 11 entries.
+[2025-11-04 15:58:49] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 15:58:49] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 15:58:49] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:58:49] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 15:58:49] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-04 15:58:49] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'quantum computers' (max_results=3)
+[2025-11-04 15:58:49] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:58:49] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-04 15:58:49] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 15:58:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 15:58:49] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 17:51:57] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 17:52:03] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 17:52:03] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 17:52:09] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 17:52:09] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 17:52:09] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 17:52:09] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 17:52:09] [INFO] [__main__]: 🔍 Searching vector database for query: 'quantum computers'
+[2025-11-04 17:52:09] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 17:52:09] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 17:52:09] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 17:52:09] [INFO] [__main__]: found len[{'score': 0.4887298345565796, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}, {'score': 0.4887298345565796, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}, {'score': 0.4887298345565796, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1', 'chunk': {'chunk_id': 0, 'text': "This paper investigates a variety of unconventional quantum computation devices, including fermionic quantum computers and computers that exploit nonlinear quantum mechanics. It is shown that unconventional quantum computing devices can in principle compute some quantities more rapidly than `conventional' quantum computers.", 'source': 'Unconventional Quantum Computing Devices'}}}] relevant results for your query: quantum computers from the database
+[2025-11-04 18:24:30] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:24:36] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:24:36] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:24:40] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:24:40] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 18:24:40] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:24:40] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 18:24:40] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear reactor'
+[2025-11-04 18:24:40] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 18:24:40] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 18:24:40] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 18:24:40] [INFO] [__main__]: found len[{'score': 1.813273549079895, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}, {'score': 1.813273549079895, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}, {'score': 1.813273549079895, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1', 'chunk': {'chunk_id': 0, 'text': "This paper investigates a variety of unconventional quantum computation devices, including fermionic quantum computers and computers that exploit nonlinear quantum mechanics. It is shown that unconventional quantum computing devices can in principle compute some quantities more rapidly than `conventional' quantum computers.", 'source': 'Unconventional Quantum Computing Devices'}}}] relevant results for your query: nuclear reactor from the database
+[2025-11-04 18:27:31] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:27:36] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:27:36] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:27:41] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:27:41] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 18:27:41] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:27:41] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 18:27:41] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-04 18:27:41] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 18:27:41] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 18:27:41] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 18:27:41] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-04 18:35:11] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:35:16] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:35:16] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:35:21] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:35:21] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 18:35:21] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:35:21] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 18:35:21] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-04 18:35:21] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 18:35:21] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 18:35:21] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 18:35:21] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-04 18:38:16] [INFO] [__main__]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:38:16] [INFO] [__main__]: Fetching papers for query: 'nuclear fissions ' (max_results=3)
+[2025-11-04 18:38:18] [INFO] [__main__]: Fetched 3 papers successfully from ArXiv.
+[2025-11-04 18:47:03] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:47:11] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:47:11] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:47:18] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:47:18] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 18:47:18] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:47:18] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 18:47:18] [INFO] [__main__]: 🔍 Searching vector database for query: 'neural networks'
+[2025-11-04 18:47:18] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 18:47:18] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 18:47:18] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 18:47:18] [INFO] [__main__]: found len[{'score': 0.8652339577674866, 'metadata': {'title': 'Neural Networks Overview', 'chunk_id': 0, 'content': '\n    Artificial neural networks (ANNs) are computing systems inspired by the biological neural networks.\n    These systems learn from data, making them capable of pattern recognition and decision making.\n    '}}, {'score': 1.6710789203643799, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}, {'score': 1.6710789203643799, 'metadata': {'title': 'Unconventional Quantum Computing Devices', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/quant-ph/0003151v1'}}] relevant results for your query: neural networks from the database
+[2025-11-04 18:48:26] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:48:31] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:48:31] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-04 18:48:36] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-04 18:48:36] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-04 18:48:36] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-04 18:48:36] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-04 18:48:36] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-04 18:48:36] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-04 18:48:36] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-04 18:48:36] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-04 18:48:36] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-05 14:51:57] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:52:00] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:52:00] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:52:04] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:52:04] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-05 14:52:04] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 14:52:04] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 14:52:04] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 14:52:04] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 14:52:04] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 14:52:04] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 14:52:04] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-05 14:55:15] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:55:19] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:55:19] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:55:22] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:55:22] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-05 14:55:22] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 14:55:22] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 14:55:22] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 14:55:22] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 14:55:22] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 14:55:22] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 14:55:22] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-05 14:57:19] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:57:23] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:57:23] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 14:57:27] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 14:57:27] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-05 14:57:27] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 14:57:27] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 14:57:27] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 14:57:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 14:57:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 14:57:27] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 14:57:27] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: nuclear fission from the database
+[2025-11-05 15:33:33] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 15:33:38] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 15:33:38] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 15:33:42] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 15:33:42] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-05 15:33:42] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 15:33:42] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 15:33:42] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 15:33:42] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 15:33:42] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 15:33:42] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 15:33:42] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: 'nuclear fission' from the database
+[2025-11-05 15:33:42] [WARNING] [__main__]: ⚠️ Initial results failed similarity threshold (0.75). Treating as 'not found'.
+[2025-11-05 17:31:48] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 17:31:53] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 17:31:53] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 17:31:57] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 17:31:57] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 14 entries.
+[2025-11-05 17:31:57] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 17:31:57] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 17:31:57] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 17:31:57] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 17:31:57] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 17:31:57] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 17:31:57] [INFO] [__main__]: found len[{'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1'}}, {'score': 1.863656997680664, 'metadata': {'title': 'The Rise of Quantum Internet Computing', 'chunk_id': 0, 'source': 'arxiv', 'url': 'http://arxiv.org/abs/2208.00733v1', 'chunk': {'chunk_id': 0, 'text': 'This article highlights quantum Internet computing as referring to distributed quantum computing over the quantum Internet, analogous to (classical) Internet computing involving (classical) distributed computing over the (classical) Internet. Relevant to quantum Internet computing would be areas of study such as quantum protocols for distributed nodes using quantum information for computations, quantum cloud computing, delegated verifiable blind or private computing, non-local gates, and distributed quantum applications, over Internet-scale distances.', 'source': 'The Rise of Quantum Internet Computing'}}}] relevant results for your query: 'nuclear fission' from the database
+[2025-11-05 17:31:57] [WARNING] [__main__]: ⚠️ Initial results failed similarity threshold (0.75). Treating as 'not found'.
+[2025-11-05 17:31:57] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 17:31:57] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'nuclear fission' (max_results=3)
+[2025-11-05 17:31:58] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 17:31:58] [INFO] [__main__]: found len[{'title': 'Benchmarking Nuclear Fission Theory', 'summary': 'We suggest a small set of fission observables to be used as test cases for\nvalidation of theoretical calculations. The purpose is to provide common data\nto facilitate the comparison of different fission theories and models. The\nproposed observables are chosen from fission barriers, spontaneous fission\nlifetimes, fission yield characteristics, and fission isomer excitation\nenergies.', 'authors': ['G. F. Bertsch', 'W. Loveland', 'W. Nazarewicz', 'P. Talou'], 'published': '2015-02-20T20:16:27Z', 'link': 'http://arxiv.org/abs/1502.05985v1'}, {'title': 'Fission barrier, damping of shell correction and neutron emission in the\n  fission of A$\\sim$200', 'summary': 'Decay of $^{210}$Po compound nucleus formed in light and heavy-ion induced\nfusion reactions has been analyzed simultaneously using a consistent\nprescription for fission barrier and nuclear level density incorporating shell\ncorrection and its damping with excitation energy. Good description of all the\nexcitation functions have been achieved with a fission barrier of 21.9 $\\pm$\n0.2 MeV. For this barrier height, the predicted statistical pre-fission\nneutrons in heavy-ion fusion-fission are much smaller than the experimental\nvalues, implying the presence of dynamical neutrons due to dissipation even at\nthese low excitation energies ($\\sim$ 50~MeV) in the mass region A $\\sim$ 200.\nWhen only heavy-ion induced fission excitation functions and the pre-fission\nneutron multiplicities are included in the fits, the deduced best fit fission\nbarrier depends on the assumed fission delay time during which dynamical\nneutrons can be emitted. A fission delay of (0.8 $\\pm$ 0.1 )$\\times 10^{-19}$ s\nhas been estimated corresponding to the above fission barrier height assuming\nthat the entire excess neutrons over and above the statistical model\npredictions are due to the dynamics. The present observation has implication on\nthe study of fission time scale/ nuclear viscosity using neutron emission as a\nprobe.', 'authors': ['K. Mahata', 'S. Kailas', 'S. S. Kapoor'], 'published': '2015-04-10T09:11:00Z', 'link': 'http://arxiv.org/abs/1504.02599v1'}, {'title': 'Thermal fission rates with temperature dependent fission barriers', 'summary': 'The fission processes of thermal excited nuclei are conventionally studied by\nstatistical models which rely on inputs of phenomenological level densities and\npotential barriers. Therefore the microscopic descriptions of spontaneous\nfission and induced fission are very desirable for a unified understanding of\nvarious fission processes.\n  We propose to study the fission rates, at both low and high temperatures,\nwith microscopically calculated temperature-dependent fission barriers and\ncollective mass parameters.\n  The fission barriers are calculated by the finite-temperature\nSkyrme-Hartree-Fock+BCS method. The mass parameters are calculated by the\ntemperature-dependent cranking approximation. The thermal fission rates can be\nobtained by the imaginary free energy approach at all temperatures, in which\nfission barriers are naturally temperature dependent. The fission at low\ntemperatures can be described mainly as a barrier-tunneling process. While the\nfission at high temperatures has to incorporate the reflection above barriers.\nOur results of spontaneous fission rates reasonably agree with other studies\nand experiments. The temperature dependencies of fission barrier heights and\ncurvatures have been discussed. The temperature dependent behaviors of mass\nparameters have also been discussed. The thermal fission rates from low to high\ntemperatures with a smooth connection have been given by different approaches.\n\\item[Conclusions] Since the temperature dependencies of fission barrier\nheights and curvatures, and the mass parameters can vary rapidly for different\nnuclei, the microscopic descriptions of thermal fission rates are very\nvaluable. Our studies without free parameters provide a consistent picture to\nstudy various fissions such as that in fast-neutron reactors, astrophysical\nenvironments and fusion reactions for superheavy nuclei.', 'authors': ['Yi Zhu', 'Junchen Pei'], 'published': '2016-05-15T11:28:34Z', 'link': 'http://arxiv.org/abs/1605.04522v2'}] papers from Arxiv
+[2025-11-05 17:31:58] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 17:31:58] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 17:31:58] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 17:31:58] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 17:31:58] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 17:31:58] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 17:31:58] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 17:31:58] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 17:31:58] [INFO] [app.core.embedding_service]: Generating embeddings for 3 text chunks...
+[2025-11-05 17:31:59] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (3, 384)
+[2025-11-05 17:31:59] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 17:31:59] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 17:31:59] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 17:31:59] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 17:31:59] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 20:43:13] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 20:43:16] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 20:43:16] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 20:43:19] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 20:43:19] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 20 entries.
+[2025-11-05 20:43:19] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 20:43:19] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 20:43:19] [INFO] [__main__]: 🔍 Searching vector database for query: 'nuclear fission'
+[2025-11-05 20:43:19] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 20:43:19] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 20:43:19] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 20:43:19] [INFO] [__main__]: found len[{'score': 0.7699406147003174, 'metadata': {'title': 'Benchmarking Nuclear Fission Theory', 'chunk_id': 0, 'source': 'Arxiv', 'url': 'http://arxiv.org/abs/1502.05985v1', 'text': 'We suggest a small set of fission observables to be used as test cases for validation of theoretical calculations. The purpose is to provide common data to facilitate the comparison of different fission theories and models. The proposed observables are chosen from fission barriers, spontaneous fission lifetimes, fission yield characteristics, and fission isomer excitation energies.'}}, {'score': 0.7768304347991943, 'metadata': {'title': 'Thermal fission rates with temperature dependent fission barriers', 'chunk_id': 1, 'source': 'Arxiv', 'url': 'http://arxiv.org/abs/1605.04522v2', 'text': 'e dependent. The fission at low temperatures can be described mainly as a barrier-tunneling process. While the fission at high temperatures has to incorporate the reflection above barriers. Our results of spontaneous fission rates reasonably agree with other studies and experiments. The temperature dependencies of fission barrier heights and curvatures have been discussed. The temperature dependent behaviors of mass parameters have also been discussed. The thermal fission rates from low to high temperatures with a smooth connection have been given by different approaches. \\item[Conclusions] Since the temperature dependencies of fission barrier heights and curvatures, and the mass parameters can vary rapidly for different nuclei, the microscopic descriptions of thermal fission rates are very valuable.'}}, {'score': 0.8450978994369507, 'metadata': {'title': 'Thermal fission rates with temperature dependent fission barriers', 'chunk_id': 2, 'source': 'Arxiv', 'url': 'http://arxiv.org/abs/1605.04522v2', 'text': 'pidly for different nuclei, the microscopic descriptions of thermal fission rates are very valuable. Our studies without free parameters provide a consistent picture to study various fissions such as that in fast-neutron reactors, astrophysical environments and fusion reactions for superheavy nuclei.'}}] relevant results for your query: 'nuclear fission' from the database
+[2025-11-05 20:43:19] [WARNING] [__main__]: ⚠️ Initial results failed similarity threshold (0.75). Treating as 'not found'.
+[2025-11-05 20:43:19] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 20:43:19] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'nuclear fission' (max_results=3)
+[2025-11-05 20:43:20] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 20:43:20] [INFO] [__main__]: found len[{'title': 'Benchmarking Nuclear Fission Theory', 'summary': 'We suggest a small set of fission observables to be used as test cases for\nvalidation of theoretical calculations. The purpose is to provide common data\nto facilitate the comparison of different fission theories and models. The\nproposed observables are chosen from fission barriers, spontaneous fission\nlifetimes, fission yield characteristics, and fission isomer excitation\nenergies.', 'authors': ['G. F. Bertsch', 'W. Loveland', 'W. Nazarewicz', 'P. Talou'], 'published': '2015-02-20T20:16:27Z', 'link': 'http://arxiv.org/abs/1502.05985v1'}, {'title': 'Fission barrier, damping of shell correction and neutron emission in the\n  fission of A$\\sim$200', 'summary': 'Decay of $^{210}$Po compound nucleus formed in light and heavy-ion induced\nfusion reactions has been analyzed simultaneously using a consistent\nprescription for fission barrier and nuclear level density incorporating shell\ncorrection and its damping with excitation energy. Good description of all the\nexcitation functions have been achieved with a fission barrier of 21.9 $\\pm$\n0.2 MeV. For this barrier height, the predicted statistical pre-fission\nneutrons in heavy-ion fusion-fission are much smaller than the experimental\nvalues, implying the presence of dynamical neutrons due to dissipation even at\nthese low excitation energies ($\\sim$ 50~MeV) in the mass region A $\\sim$ 200.\nWhen only heavy-ion induced fission excitation functions and the pre-fission\nneutron multiplicities are included in the fits, the deduced best fit fission\nbarrier depends on the assumed fission delay time during which dynamical\nneutrons can be emitted. A fission delay of (0.8 $\\pm$ 0.1 )$\\times 10^{-19}$ s\nhas been estimated corresponding to the above fission barrier height assuming\nthat the entire excess neutrons over and above the statistical model\npredictions are due to the dynamics. The present observation has implication on\nthe study of fission time scale/ nuclear viscosity using neutron emission as a\nprobe.', 'authors': ['K. Mahata', 'S. Kailas', 'S. S. Kapoor'], 'published': '2015-04-10T09:11:00Z', 'link': 'http://arxiv.org/abs/1504.02599v1'}, {'title': 'Thermal fission rates with temperature dependent fission barriers', 'summary': 'The fission processes of thermal excited nuclei are conventionally studied by\nstatistical models which rely on inputs of phenomenological level densities and\npotential barriers. Therefore the microscopic descriptions of spontaneous\nfission and induced fission are very desirable for a unified understanding of\nvarious fission processes.\n  We propose to study the fission rates, at both low and high temperatures,\nwith microscopically calculated temperature-dependent fission barriers and\ncollective mass parameters.\n  The fission barriers are calculated by the finite-temperature\nSkyrme-Hartree-Fock+BCS method. The mass parameters are calculated by the\ntemperature-dependent cranking approximation. The thermal fission rates can be\nobtained by the imaginary free energy approach at all temperatures, in which\nfission barriers are naturally temperature dependent. The fission at low\ntemperatures can be described mainly as a barrier-tunneling process. While the\nfission at high temperatures has to incorporate the reflection above barriers.\nOur results of spontaneous fission rates reasonably agree with other studies\nand experiments. The temperature dependencies of fission barrier heights and\ncurvatures have been discussed. The temperature dependent behaviors of mass\nparameters have also been discussed. The thermal fission rates from low to high\ntemperatures with a smooth connection have been given by different approaches.\n\\item[Conclusions] Since the temperature dependencies of fission barrier\nheights and curvatures, and the mass parameters can vary rapidly for different\nnuclei, the microscopic descriptions of thermal fission rates are very\nvaluable. Our studies without free parameters provide a consistent picture to\nstudy various fissions such as that in fast-neutron reactors, astrophysical\nenvironments and fusion reactions for superheavy nuclei.', 'authors': ['Yi Zhu', 'Junchen Pei'], 'published': '2016-05-15T11:28:34Z', 'link': 'http://arxiv.org/abs/1605.04522v2'}] papers from Arxiv
+[2025-11-05 20:43:20] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 20:43:20] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 20:43:20] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:43:20] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 20:43:20] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 20:43:21] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 20:43:21] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:43:21] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 20:43:21] [INFO] [app.core.embedding_service]: Generating embeddings for 3 text chunks...
+[2025-11-05 20:43:21] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (3, 384)
+[2025-11-05 20:43:21] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:43:21] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 20:43:21] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 20:43:21] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 20:43:21] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 20:51:58] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 20:52:01] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 20:52:01] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 20:52:05] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 20:52:05] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 26 entries.
+[2025-11-05 20:52:05] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 20:52:05] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 20:52:05] [INFO] [__main__]: 🔍 Searching vector database for query: 'microbiology'
+[2025-11-05 20:52:05] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 20:52:05] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 20:52:05] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 20:52:05] [INFO] [__main__]: found len[{'score': 1.6854560375213623, 'metadata': {'title': 'Neural Networks Overview', 'chunk_id': 0, 'content': '\n    Artificial neural networks (ANNs) are computing systems inspired by the biological neural networks.\n    These systems learn from data, making them capable of pattern recognition and decision making.\n    '}}, {'score': 1.8164652585983276, 'metadata': {'title': 'Thermal fission rates with temperature dependent fission barriers', 'chunk_id': 1, 'source': 'Arxiv', 'url': 'http://arxiv.org/abs/1605.04522v2', 'text': 'e dependent. The fission at low temperatures can be described mainly as a barrier-tunneling process. While the fission at high temperatures has to incorporate the reflection above barriers. Our results of spontaneous fission rates reasonably agree with other studies and experiments. The temperature dependencies of fission barrier heights and curvatures have been discussed. The temperature dependent behaviors of mass parameters have also been discussed. The thermal fission rates from low to high temperatures with a smooth connection have been given by different approaches. \\item[Conclusions] Since the temperature dependencies of fission barrier heights and curvatures, and the mass parameters can vary rapidly for different nuclei, the microscopic descriptions of thermal fission rates are very valuable.'}}, {'score': 1.8164652585983276, 'metadata': {'title': 'Thermal fission rates with temperature dependent fission barriers', 'chunk_id': 1, 'source': 'Arxiv', 'url': 'http://arxiv.org/abs/1605.04522v2', 'text': 'e dependent. The fission at low temperatures can be described mainly as a barrier-tunneling process. While the fission at high temperatures has to incorporate the reflection above barriers. Our results of spontaneous fission rates reasonably agree with other studies and experiments. The temperature dependencies of fission barrier heights and curvatures have been discussed. The temperature dependent behaviors of mass parameters have also been discussed. The thermal fission rates from low to high temperatures with a smooth connection have been given by different approaches. \\item[Conclusions] Since the temperature dependencies of fission barrier heights and curvatures, and the mass parameters can vary rapidly for different nuclei, the microscopic descriptions of thermal fission rates are very valuable.'}}] relevant results for your query: 'microbiology' from the database
+[2025-11-05 20:52:05] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 20:52:05] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'microbiology' (max_results=3)
+[2025-11-05 20:52:06] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 20:52:06] [INFO] [__main__]: found len[{'title': 'Development and Validation of MicrobEx: an Open-Source Package for\n  Microbiology Culture Concept Extraction', 'summary': 'Microbiology culture reports contain critical information for important\nclinical and public health applications. However, microbiology reports often\nhave complex, semi-structured, free-text data that present a barrier for\nsecondary use. Here we present the development and validation of an open-source\npackage designed to ingest free-text microbiology reports, determine whether\nthe culture is positive, and return a list of SNOMED-CT mapped bacteria. Our\nrule-based natural language processing algorithm was developed using\nmicrobiology reports from two different electronic health record systems in a\nlarge healthcare organization, and then externally validated on the reports of\ntwo other institutions with manually-extracted results as a benchmark. Our\nalgorithm achieved F-1 scores >0.95 on all classification tasks across both\nvalidation sets. Our concept extraction Python package, MicrobEx, is designed\nto be reused and adapted to individual institutions as an upstream process for\nother clinical applications, such as machine learning studies, clinical\ndecision support, and disease surveillance systems.', 'authors': ['Garrett Eickelberg', 'Yuan Luo', 'L. Nelson Sanchez-Pinto'], 'published': '2021-11-22T20:33:09Z', 'link': 'http://arxiv.org/abs/2111.11518v1'}, {'title': 'Artificial Intelligence for Microbiology and Microbiome Research', 'summary': 'Advancements in artificial intelligence (AI) have transformed many scientific\nfields, with microbiology and microbiome research now experiencing significant\nbreakthroughs through machine learning and deep learning applications. This\nreview provides a comprehensive overview of AI-driven approaches tailored for\nmicrobiology and microbiome studies, emphasizing both technical advancements\nand biological insights. We begin with an introduction to foundational AI\ntechniques, including primary machine learning paradigms and various deep\nlearning architectures, and offer guidance on choosing between machine learning\nand deep learning methods based on specific research goals. The primary section\non application scenarios spans diverse research areas, from taxonomic\nprofiling, functional annotation & prediction, microbe-X interactions,\nmicrobial ecology, metabolic modeling, precision nutrition, clinical\nmicrobiology, to prevention & therapeutics. Finally, we discuss challenges\nunique to this field, including the balance between interpretability and\ncomplexity, the "small n, large p" problem, and the critical need for\nstandardized benchmarking datasets to validate and compare models. Together,\nthis review underscores AI\'s transformative role in microbiology and microbiome\nresearch, paving the way for innovative methodologies and applications that\nenhance our understanding of microbial life and its impact on our planet and\nour health.', 'authors': ['Xu-Wen Wang', 'Tong Wang', 'Yang-Yu Liu'], 'published': '2024-11-02T01:03:43Z', 'link': 'http://arxiv.org/abs/2411.01098v1'}, {'title': 'Research Progress of Terahertz Technology in Microbiology', 'summary': 'Microorganisms are ubiquitous in nature, and microbial activities are closely\nintertwined with the entire life cycle system and human life. Developing novel\ntechnologies for the detection, characterization and manipulation of\nmicroorganisms promotes their applications in clinical, environmental and\nindustrial areas. Over the last two decades, terahertz (THz) technology has\nemerged as a new optical tool for microbiology. The great potential originates\nfrom the unique advantages of THz waves including the high sensitivity to water\nand inter-/intra-molecular motions, the non-invasive and label-free detecting\nscheme, and their low photon energy. THz waves have been utilized as a stimulus\nto alter microbial functions, or as a sensing approach for quantitative\nmeasurement and qualitative differentiation. This review specifically focuses\non recent research progress of THz technology applied in the field of\nmicrobiology, including two major parts of THz biological effects and the\nmicrobial detection applications. In the end of this paper, we summarize the\nresearch progress and discuss the challenges currently faced by THz technology\nin microbiology, along with potential solutions. We also provide a perspective\non future development directions. This review aims to build a bridge between\nTHz photonics and microbiology, promoting both fundamental research and\napplication development in this interdisciplinary field.', 'authors': ['Ding Cao', 'Guangyou Fang', 'Xuequan Chen'], 'published': '2025-10-16T07:34:13Z', 'link': 'http://arxiv.org/abs/2510.14385v1'}] papers from Arxiv. indexing ...... 
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 20:52:06] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:52:06] [INFO] [__main__]: 🧠 Added 0 new chunks to local vector store. Re-querying...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 20:52:06] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:52:06] [INFO] [__main__]: 🧠 Added 0 new chunks to local vector store. Re-querying...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 20:52:06] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 20:52:06] [INFO] [__main__]: 🧠 Added 0 new chunks to local vector store. Re-querying...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 20:52:06] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 20:52:06] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:07:19] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:07:22] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:07:22] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:07:25] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:07:25] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 32 entries.
+[2025-11-05 21:07:25] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 21:07:25] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 21:07:25] [INFO] [__main__]: 🔍 Searching vector database for query: 'uranium'
+[2025-11-05 21:07:25] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:07:25] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:07:25] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:07:25] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 21:07:25] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'uranium' (max_results=3)
+[2025-11-05 21:07:26] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 21:07:26] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:07:27] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 21:07:27] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:07:27] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:09:45] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:09:48] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:09:48] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:09:52] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 35 entries.
+[2025-11-05 21:09:52] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 21:09:52] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 21:09:52] [INFO] [__main__]: 🔍 Searching vector database for query: 'uranium'
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:09:52] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:09:52] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 21:09:52] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'uranium' (max_results=3)
+[2025-11-05 21:09:52] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:09:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:09:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:09:53] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 21:09:53] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 21:09:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:09:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:09:53] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:13:05] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:13:09] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:13:09] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:13:12] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:13:12] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 38 entries.
+[2025-11-05 21:13:12] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 21:13:12] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 21:13:12] [INFO] [__main__]: 🔍 Searching vector database for query: 'uranium'
+[2025-11-05 21:13:12] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:13:12] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:13:12] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:13:12] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-05 21:14:02] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:14:06] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:14:06] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-05 21:14:09] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-05 21:14:09] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 38 entries.
+[2025-11-05 21:14:09] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-05 21:14:09] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-05 21:14:09] [INFO] [__main__]: 🔍 Searching vector database for query: 'metallic hydrides'
+[2025-11-05 21:14:09] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:14:09] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:14:09] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:14:09] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-05 21:14:09] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'metallic hydrides' (max_results=3)
+[2025-11-05 21:14:10] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generating embeddings for 3 text chunks...
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (3, 384)
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:14:10] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-05 21:14:10] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-05 21:14:10] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-05 21:14:10] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-05 21:14:10] [INFO] [__main__]: ✅ Found 2 new relevant results after adding Arxiv papers.
+[2025-11-08 19:36:02] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-08 19:36:06] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-08 19:36:06] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-08 19:36:10] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-08 19:36:10] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 44 entries.
+[2025-11-08 19:36:10] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-08 19:36:10] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-08 19:36:10] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-08 19:36:10] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-08 19:36:10] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-08 19:36:10] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-08 19:36:10] [WARNING] [__main__]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-08 19:36:10] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'blockchain' (max_results=3)
+[2025-11-08 19:36:11] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-08 19:36:11] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-08 19:36:11] [INFO] [__main__]: 🧠 Added new papers to local vector store.
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-08 19:36:11] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-08 19:36:11] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-08 19:36:11] [INFO] [__main__]: ✅ Found 3 new relevant results after adding Arxiv papers.
+[2025-11-10 14:40:30] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-10 14:41:34] [ERROR] [__main__]: Gemini API error: 429 Quota exceeded for quota metric 'Generate Content API requests per minute' and limit 'GenerateContent request limit per minute for a region' of service 'generativelanguage.googleapis.com' for consumer 'project_number:911003041064'. [reason: "RATE_LIMIT_EXCEEDED"
+domain: "googleapis.com"
+metadata {
+  key: "consumer"
+  value: "projects/911003041064"
+}
+metadata {
+  key: "quota_limit"
+  value: "GenerateContentRequestsPerMinutePerProjectPerRegion"
+}
+metadata {
+  key: "quota_limit_value"
+  value: "0"
+}
+metadata {
+  key: "quota_location"
+  value: "europe-west1"
+}
+metadata {
+  key: "quota_metric"
+  value: "generativelanguage.googleapis.com/generate_content_requests"
+}
+metadata {
+  key: "quota_unit"
+  value: "1/min/{project}/{region}"
+}
+metadata {
+  key: "service"
+  value: "generativelanguage.googleapis.com"
+}
+, links {
+  description: "Request a higher quota limit."
+  url: "https://cloud.google.com/docs/quotas/help/request_increase"
+}
+]
+[2025-11-10 14:50:31] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-10 17:19:09] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-10 23:25:30] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-10 23:25:37] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-10 23:25:37] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-10 23:25:41] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-10 23:25:41] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-10 23:25:41] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-10 23:25:41] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-10 23:25:41] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-10 23:25:41] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-10 23:25:41] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-10 23:25:41] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-10 23:25:41] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-10 23:25:41] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-10 23:25:41] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-10 23:25:41] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-10 23:25:48] [INFO] [app.services.summarizer]: Summary generated successfully.
