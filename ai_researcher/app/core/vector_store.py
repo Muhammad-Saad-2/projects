@@ -1,9 +1,8 @@
 import os 
 import json
-from xml.parsers.expat import model
 import numpy as np
 import faiss  #type: ignore
-from typing import List, Tuple, Any, Dict
+from typing import List, Dict, Optional
 from app.core.embedding_service import EmbeddingService 
 from app.utils.logger import get_logger
 
@@ -17,7 +16,7 @@ METADATA_PATH = "./app/data/vector_store/metadata.json"
 
 
 class VectorStore:
-    def __init__(self, embedding_dem: int = 384):
+    def __init__(self, embedding_dem: int = 384, embedding_service: Optional['EmbeddingService'] = None): 
         self.embedding_dim = embedding_dem
         self.index_path = VECTOR_INDEX_PATH
         self.metadata_path = METADATA_PATH
@@ -25,7 +24,7 @@ class VectorStore:
         os.makedirs(os.path.dirname(self.index_path), exist_ok=True)
 
         # self.model = SentenceTransformer("all-MiniLM-L6-v2")
-        self.embedding_service = EmbeddingService(model_name="all-MiniLM-L6-v2")
+        self.embedding_service = embedding_service or EmbeddingService(model_name="all-MiniLM-L6-v2")
         self.index, self.metadata = self._load_or_initialize()
 
     

@@ -588,3 +588,49 @@ metadata {
 [2025-11-10 23:25:41] [INFO] [__main__]: ✅ Found 3 results locally.
 [2025-11-10 23:25:41] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
 [2025-11-10 23:25:48] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-11 00:12:11] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-11 00:12:14] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-11 00:12:16] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-11 00:12:20] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-11 00:12:20] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-11 00:12:20] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-11 00:12:20] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-11 00:12:20] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-11 00:12:20] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-11 00:12:20] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-11 00:12:20] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-11 00:12:20] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-11 00:12:20] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-11 00:12:20] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-11 00:12:20] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-11 00:12:29] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-11 00:13:14] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-11 00:13:17] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-11 00:13:19] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-11 00:13:23] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-11 00:13:23] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-11 00:13:23] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-11 00:13:23] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-11 00:13:23] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-11 00:13:23] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-11 00:13:23] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-11 00:13:23] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-11 00:13:23] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-11 00:13:23] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-11 00:13:23] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-11 00:13:23] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-11 00:13:28] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-11 00:15:23] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-11 00:15:27] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-11 00:15:27] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-11 00:15:27] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-11 00:15:27] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-11 00:15:27] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-11 00:15:27] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-11 00:15:27] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-11 00:15:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-11 00:15:28] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-11 00:15:28] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-11 00:15:28] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-11 00:15:28] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-11 00:15:33] [INFO] [app.services.summarizer]: Summary generated successfully.

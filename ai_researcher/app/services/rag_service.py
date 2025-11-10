@@ -21,7 +21,7 @@ class RAGService:
 
     def __init__(self):
         self.embedding_service = EmbeddingService(model_name="all-MiniLM-L6-v2")
-        self.vector_store = VectorStore(embedding_dem=384)
+        self.vector_store = VectorStore(embedding_dem=384, embedding_service=self.embedding_service)
         self.fetcher = PaperFetcher()
         self.summarizer = Summarizer()  # ✅ Initialize Gemini-based summarizer
 
