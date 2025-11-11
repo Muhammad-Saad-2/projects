@@ -44,11 +44,11 @@ class GeminiLLM:
             logger.error(f"Gemini API error: {str(e)}")
             return "⚠️ Error generating response from Gemini."
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    llm = GeminiLLM()
+#     llm = GeminiLLM()
 
-    result = llm.generate_text("explain quantum computing in 2 lines", system_prompt="you're one of the top quantum researcher in the world")
-    print(result)
+#     result = llm.generate_text("explain quantum computing in 2 lines", system_prompt="you're one of the top quantum researcher in the world")
+#     print(result)
 
 

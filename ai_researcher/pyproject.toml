@@ -27,9 +27,7 @@ dependencies = [
     "wheel>=0.45.1",
 ]
 
-[tool.uv.workspace]
-members = [
-    "app/core",
-]
+
+
 
 

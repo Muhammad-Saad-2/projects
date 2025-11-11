@@ -30,6 +30,6 @@ class EmbeddingService:
         logger.info(f"Generating embeddings for {len(texts)} text chunks...")
         embeddings = self.model.encode(texts, convert_to_numpy=True)
         logger.info(f"Generated embeddings with shape: {embeddings.shape}")
-        return embeddings
+        return embeddings 
 
 

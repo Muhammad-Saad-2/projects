@@ -536,40 +536,6 @@
 [2025-11-08 19:36:11] [INFO] [__main__]: ✅ Found 3 new relevant results after adding Arxiv papers.
 [2025-11-10 14:40:30] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
 [2025-11-10 14:41:34] [ERROR] [__main__]: Gemini API error: 429 Quota exceeded for quota metric 'Generate Content API requests per minute' and limit 'GenerateContent request limit per minute for a region' of service 'generativelanguage.googleapis.com' for consumer 'project_number:911003041064'. [reason: "RATE_LIMIT_EXCEEDED"
-domain: "googleapis.com"
-metadata {
-  key: "consumer"
-  value: "projects/911003041064"
-}
-metadata {
-  key: "quota_limit"
-  value: "GenerateContentRequestsPerMinutePerProjectPerRegion"
-}
-metadata {
-  key: "quota_limit_value"
-  value: "0"
-}
-metadata {
-  key: "quota_location"
-  value: "europe-west1"
-}
-metadata {
-  key: "quota_metric"
-  value: "generativelanguage.googleapis.com/generate_content_requests"
-}
-metadata {
-  key: "quota_unit"
-  value: "1/min/{project}/{region}"
-}
-metadata {
-  key: "service"
-  value: "generativelanguage.googleapis.com"
-}
-, links {
-  description: "Request a higher quota limit."
-  url: "https://cloud.google.com/docs/quotas/help/request_increase"
-}
-]
 [2025-11-10 14:50:31] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
 [2025-11-10 17:19:09] [INFO] [__main__]: Gemini LLM initialized with model 'gemini-2.5-flash'
 [2025-11-10 23:25:30] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
