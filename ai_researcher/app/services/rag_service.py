@@ -87,7 +87,7 @@ class RAGService:
                 "summary": summary,
             }
 
-        # ⚠️ Fallback: Fetch from Arxiv if local data is insufficient
+        #  Fallback: Fetch from Arxiv if local data is insufficient
         logger.warning("⚠️ No local results found. Triggering fallback to Arxiv.")
         fetched_papers = self.fetcher.fetch_papers(query, max_results=3)
 
@@ -144,7 +144,7 @@ class RAGService:
         }
 
 
-if __name__ == "__main__":
-    rag = RAGService()
-    result = rag.query_knowledge("blockchain", similarity_threshold=0.5, top_k=3)
-    print(result)
+# if __name__ == "__main__":
+#     rag = RAGService()
+#     result = rag.query_knowledge("blockchain", similarity_threshold=0.5, top_k=3)
+#     print(result)

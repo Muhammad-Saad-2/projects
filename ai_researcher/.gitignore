@@ -7,3 +7,6 @@
 app/data/
 
 ARCHITECTURE.md
+
+faiss_test.py
+logger_test.py 

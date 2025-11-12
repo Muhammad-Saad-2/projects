@@ -600,3 +600,117 @@
 [2025-11-11 00:15:28] [INFO] [__main__]: ✅ Found 3 results locally.
 [2025-11-11 00:15:28] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
 [2025-11-11 00:15:33] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-12 15:59:55] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-12 16:00:06] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-12 16:00:06] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-12 16:00:06] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-12 16:00:06] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-12 16:00:06] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-12 16:00:06] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-12 16:03:50] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-12 16:03:56] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-12 16:03:56] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 48 entries.
+[2025-11-12 16:03:56] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-12 16:03:56] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-12 16:03:56] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-12 16:03:56] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-12 16:04:50] [INFO] [app.routes]: Recieved your Query : robotics
+[2025-11-12 16:04:50] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'robotics'
+[2025-11-12 16:04:50] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:04:50] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:04:50] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:04:50] [WARNING] [app.services.rag_service]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-12 16:04:50] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'robotics' (max_results=3)
+[2025-11-12 16:04:52] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:04:52] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-12 16:04:52] [INFO] [app.services.rag_service]: 🧠 Added new papers to local vector store.
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:04:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:04:52] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:04:52] [INFO] [app.services.rag_service]: ✅ Found 1 new relevant results after adding Arxiv papers.
+[2025-11-12 16:04:52] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-12 16:04:56] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-12 16:06:34] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-12 16:06:40] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-12 16:06:40] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 53 entries.
+[2025-11-12 16:06:40] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-12 16:06:40] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-12 16:06:40] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-12 16:06:40] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-12 16:07:26] [INFO] [app.routes]: Recieved your Query : robotics
+[2025-11-12 16:07:26] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'robotics'
+[2025-11-12 16:07:26] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:07:26] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:07:26] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:07:26] [WARNING] [app.services.rag_service]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-12 16:07:26] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'robotics' (max_results=3)
+[2025-11-12 16:07:27] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:07:27] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-12 16:07:27] [INFO] [app.services.rag_service]: 🧠 Added new papers to local vector store.
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:07:27] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:07:27] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:08:52] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-12 16:08:58] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-12 16:08:58] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 58 entries.
+[2025-11-12 16:08:58] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-12 16:08:58] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-12 16:08:58] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-12 16:08:58] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-12 16:09:02] [INFO] [app.routes]: Recieved your Query : boron
+[2025-11-12 16:09:02] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'boron'
+[2025-11-12 16:09:02] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:09:02] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:09:02] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:09:02] [WARNING] [app.services.rag_service]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-12 16:09:02] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'boron' (max_results=3)
+[2025-11-12 16:09:03] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-12 16:09:03] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:09:03] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:09:03] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:09:04] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:09:04] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:09:04] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:09:04] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-12 16:09:04] [INFO] [app.services.rag_service]: 🧠 Added new papers to local vector store.
+[2025-11-12 16:09:04] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:09:04] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:09:04] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:12:24] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-12 16:12:30] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-12 16:12:30] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 61 entries.
+[2025-11-12 16:12:30] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-12 16:12:30] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-12 16:12:30] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-12 16:12:30] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-12 16:14:47] [INFO] [app.routes]: Recieved your Query : boron
+[2025-11-12 16:14:47] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'boron'
+[2025-11-12 16:14:47] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:14:47] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:14:47] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-12 16:14:47] [WARNING] [app.services.rag_service]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-12 16:14:47] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'boron' (max_results=3)
+[2025-11-12 16:14:49] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:14:49] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-12 16:14:49] [INFO] [app.services.rag_service]: 🧠 Added new papers to local vector store.
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-12 16:14:49] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
