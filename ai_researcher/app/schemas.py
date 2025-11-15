@@ -4,13 +4,13 @@ from typing import List, Dict, Optional, Any
 
 class QueryRequest(BaseModel):
     query:str 
-    similarity_threshold: float = Field(default=0.75, ge=0.5, le=0.75)
+    similarity_threshold: float = Field(default=0.75, ge=0.3, le=0.75)
     top_k: int = 5 
 
 
 class SearchResult(BaseModel):
     score: float
-    similarity_threhold: str
+    # similarity_threhold: str
     metadata: Dict[str, Any]
 
 

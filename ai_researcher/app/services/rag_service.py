@@ -144,7 +144,7 @@ class RAGService:
         }
 
 
-# if __name__ == "__main__":
-#     rag = RAGService()
-#     result = rag.query_knowledge("blockchain", similarity_threshold=0.5, top_k=3)
-#     print(result)
+if __name__ == "__main__":
+    rag = RAGService()
+    result = rag.query_knowledge("blockchain", similarity_threshold=0.5, top_k=3)
+    print(result)

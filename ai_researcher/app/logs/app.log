@@ -714,3 +714,80 @@
 [2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
 [2025-11-12 16:14:49] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
 [2025-11-12 16:14:49] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-15 21:21:05] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-15 21:21:10] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-15 21:21:10] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 64 entries.
+[2025-11-15 21:21:10] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-15 21:21:10] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-15 21:21:10] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-15 21:21:10] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-15 21:28:57] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-15 21:29:01] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-15 21:29:01] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 64 entries.
+[2025-11-15 21:29:01] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-15 21:29:01] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-15 21:29:01] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-15 21:29:01] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-15 21:29:51] [INFO] [app.routes]: Recieved your Query : quantum mechanics
+[2025-11-15 21:29:51] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'quantum mechanics'
+[2025-11-15 21:29:51] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:29:51] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:29:51] [INFO] [app.core.vector_store]: Search completed. Found 5 results.
+[2025-11-15 21:29:51] [WARNING] [app.services.rag_service]: ⚠️ No local results found. Triggering fallback to Arxiv.
+[2025-11-15 21:29:51] [INFO] [app.services.paper_fetcher]: Fetching papers for query: 'quantum mechanics' (max_results=3)
+[2025-11-15 21:29:52] [INFO] [app.services.paper_fetcher]: Fetched 3 papers successfully from ArXiv.
+[2025-11-15 21:29:52] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:29:52] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:29:52] [INFO] [app.core.embedding_service]: Generating embeddings for 2 text chunks...
+[2025-11-15 21:29:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (2, 384)
+[2025-11-15 21:29:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:29:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:29:53] [INFO] [app.core.vector_store]: FAISS index and metadata saved successfully.
+[2025-11-15 21:29:53] [INFO] [app.services.rag_service]: 🧠 Added new papers to local vector store.
+[2025-11-15 21:29:53] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:29:53] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:29:53] [INFO] [app.core.vector_store]: Search completed. Found 5 results.
+[2025-11-15 21:33:34] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-15 21:33:38] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-15 21:33:38] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 68 entries.
+[2025-11-15 21:33:38] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-15 21:33:38] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-15 21:33:38] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-15 21:33:38] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-15 21:34:13] [INFO] [app.routes]: Recieved your Query : quantum mechanics
+[2025-11-15 21:34:13] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'quantum mechanics'
+[2025-11-15 21:34:13] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:34:13] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:34:13] [INFO] [app.core.vector_store]: Search completed. Found 5 results.
+[2025-11-15 21:34:13] [INFO] [app.services.rag_service]: ✅ Found 5 results locally.
+[2025-11-15 21:34:13] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-15 21:34:21] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-15 21:40:54] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-15 21:40:58] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-15 21:40:58] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 68 entries.
+[2025-11-15 21:40:58] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-15 21:40:58] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-15 21:40:58] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-15 21:40:58] [INFO] [__main__]: RAGService initialized successfully.
+[2025-11-15 21:40:58] [INFO] [__main__]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-15 21:40:58] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:40:58] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:40:58] [INFO] [app.core.vector_store]: Search completed. Found 3 results.
+[2025-11-15 21:40:58] [INFO] [__main__]: ✅ Found 3 results locally.
+[2025-11-15 21:40:58] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-15 21:41:02] [INFO] [app.services.summarizer]: Summary generated successfully.
+[2025-11-15 21:42:04] [INFO] [app.core.embedding_service]: Initializing embedding model: all-MiniLM-L6-v2
+[2025-11-15 21:42:09] [INFO] [app.core.embedding_service]: Embedding Model Loaded Successfully 
+[2025-11-15 21:42:09] [INFO] [app.core.vector_store]: Loaded existing FAISS index with 68 entries.
+[2025-11-15 21:42:09] [INFO] [app.services.paper_fetcher]: PaperFetcher initialized — ready to fetch papers from ArXiv.
+[2025-11-15 21:42:09] [INFO] [app.core.llm]: Gemini LLM initialized with model 'gemini-2.5-flash'
+[2025-11-15 21:42:09] [INFO] [app.services.summarizer]: Summarizer initialized with GeminiLLM.
+[2025-11-15 21:42:09] [INFO] [app.services.rag_service]: RAGService initialized successfully.
+[2025-11-15 21:42:43] [INFO] [app.routes]: Recieved your Query : blockchain
+[2025-11-15 21:42:43] [INFO] [app.services.rag_service]: 🔍 Searching vector database for query: 'blockchain'
+[2025-11-15 21:42:43] [INFO] [app.core.embedding_service]: Generating embeddings for 1 text chunks...
+[2025-11-15 21:42:43] [INFO] [app.core.embedding_service]: Generated embeddings with shape: (1, 384)
+[2025-11-15 21:42:43] [INFO] [app.core.vector_store]: Search completed. Found 5 results.
+[2025-11-15 21:42:43] [INFO] [app.services.rag_service]: ✅ Found 4 results locally.
+[2025-11-15 21:42:43] [INFO] [app.services.summarizer]: Sending summarization prompt to Gemini.
+[2025-11-15 21:42:48] [INFO] [app.services.summarizer]: Summary generated successfully.
