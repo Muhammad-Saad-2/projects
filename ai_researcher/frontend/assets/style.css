@@ -1,0 +1,59 @@
+
+/* General Body Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f6;
+}
+
+/* Main App Container */
+.stApp {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 2rem;
+}
+
+/* Chat Input */
+.stChatInputContainer {
+    padding: 1rem;
+    background-color: #f0f2f6;
+    border-radius: 10px;
+}
+
+/* Chat Messages */
+.stChatMessage {
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* User Message */
+[data-testid="stChatMessage"] > div[style*="flex-direction: row-reverse;"] {
+    background-color: #dcf8c6;
+    color: #000;
+}
+
+/* Assistant Message */
+[data-testid="stChatMessage"]:not(:has(div[style*="flex-direction: row-reverse;"])) {
+    background-color: #f1f0f0;
+    color: #000;
+}
+
+/* Sidebar */
+.css-1d391kg {
+    background-color: #f8f9fa;
+    border-right: 1px solid #ddd;
+}
+
+/* Title */
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+/* Markdown */
+p {
+    font-size: 1.1rem;
+    color: #444;
+}
