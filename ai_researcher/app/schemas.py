@@ -10,7 +10,6 @@ class QueryRequest(BaseModel):
 
 class SearchResult(BaseModel):
     score: float
-    # similarity_threhold: str
     metadata: Dict[str, Any]
 
 
