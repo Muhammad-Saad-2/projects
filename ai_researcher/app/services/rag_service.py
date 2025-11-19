@@ -66,7 +66,7 @@ class RAGService:
         return self.summarizer.summarize(query, context_chunks)
 
     def query_knowledge(
-        self, query: str, similarity_threshold: float = 0.75, top_k: int = 3
+        self, query: str, similarity_threshold: float = 0.4, top_k: int = 3
     ) -> Dict[str, Any]:
         """
         Checks local knowledge base first, then fetches from Arxiv if not found.
@@ -93,7 +93,11 @@ class RAGService:
 
         if not fetched_papers:
             logger.error("❌ No papers found on Arxiv.")
-            return {"status": "error", "message": "No papers found for your query."}
+            return {"status": "error", 
+                    "message": "No papers found for your query.",
+                    "summary": "no context found for the summary",
+                    "results": []
+                }
 
         # Process and store new papers
         for paper in fetched_papers:
@@ -140,6 +144,7 @@ class RAGService:
             "status": "success",
             "source": "arxiv (newly added)",
             "summary": "No conclusive information found in retrieved sources.",
+            "results":[],
             "message": "No local data found — papers fetched from Arxiv and added to vector store, but none met the similarity threshold.",
         }
 

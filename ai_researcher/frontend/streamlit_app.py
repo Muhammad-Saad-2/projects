@@ -1,6 +1,6 @@
 
 import streamlit as st
-import requests
+import requests #type:ignore 
 import json
 from pathlib import Path
 
