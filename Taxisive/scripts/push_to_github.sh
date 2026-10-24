@@ -37,12 +37,11 @@ git -C "$repo_root" add -- \
     "${project_prefix}scripts"
 
 if git -C "$repo_root" diff --cached --quiet; then
-    echo "No project changes to commit."
-    exit 0
+    echo "No new project changes to commit; pushing existing commits."
+else
+    git -C "$repo_root" commit \
+        -m "feat: use PostgreSQL for persisted charges" \
+        -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
 fi
-
-git -C "$repo_root" commit \
-    -m "feat: use PostgreSQL for persisted charges" \
-    -m "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
 
 git -C "$repo_root" push "$remote" "$branch"
