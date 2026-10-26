@@ -4,6 +4,7 @@ from collections.abc import AsyncIterator
 
 from dotenv import load_dotenv
 from fastapi import HTTPException, status
+from redis.asyncio import Redis
 from sqlalchemy import URL
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import (
@@ -81,3 +82,11 @@ async def get_db_session() -> AsyncIterator[AsyncSession]:
 
     async with session_maker() as session:
         yield session
+
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+redis_client = Redis(
+    host=REDIS_HOST, port=REDIS_PORT, db=0, decode_responses=True
+)
