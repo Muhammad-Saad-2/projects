@@ -1,89 +1,70 @@
+# app/routers/charges_router.py
 import uuid
-from typing import Annotated
-
+from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
-from sqlalchemy import select
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from app.core.database import get_db_session
 from app.models.charge_model import Charge
-from app.schemas.charge_schema import ChargeRequest, ChargeResponse
+from app.schemas.charge_schema import ChargeCreate, ChargeResponse
+from app.services.idempotency_service import get_cache, store_cached_charge
 
 router = APIRouter(prefix="/charges", tags=["Charges"])
-
-
-def _charge_response(charge: Charge) -> ChargeResponse:
-    return ChargeResponse(
-        id=charge.id,
-        amount=charge.amount,
-        currency=charge.currency,
-        customer=charge.customer_id,
-        status=charge.status,
-    )
-
 
 @router.post(
     "",
     response_model=ChargeResponse,
     status_code=status.HTTP_201_CREATED,
-    summary="Create a charge with idempotency support",
+    summary="Charge endpoint with Redis-backed Idempotency"
 )
-async def create_charge(
-    payload: ChargeRequest,
+def create_charge(
+    payload: ChargeCreate,
     response: Response,
-    session: Annotated[AsyncSession, Depends(get_db_session)],
-    idempotency_key: Annotated[str | None, Header(alias="Idempotency-Key")] = None,
-    scenario: str = "normal",
+    db: Session = Depends(get_db_session),
+    idempotency_key: Annotated[Optional[str], Header(alias="Idempotency-Key")] = None,
+    simulate_fail: Optional[bool] = False
 ):
-    idempotency_key = idempotency_key or None
-
+    # 1. Check Redis Idempotency Ledger
     if idempotency_key:
-        existing_charge = await session.scalar(
-            select(Charge).where(Charge.idempotency_key == idempotency_key)
-        )
-        if existing_charge is not None:
+        cached_result = get_cache(idempotency_key)
+        if cached_result:
+            # Overwrite the default 201 Created to 200 OK for cached hit
             response.status_code = status.HTTP_200_OK
             response.headers["X-Cache-Lookup"] = "HIT"
-            return _charge_response(existing_charge)
+            return cached_result
 
-    if scenario == "server_crash_503":
+    # 2. Simulate failure (e.g. transient network or DB drop)
+    if simulate_fail:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Database connection pool exhausted"
+            detail="Transient database connection glitch."
         )
 
-    if scenario == "connection_drop":
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Simulated network dropped before response dispatch",
-        )
-
-    charge = Charge(
-        id=f"ch_{uuid.uuid4().hex[:8]}",
+    # 3. Create real entity in PostgreSQL
+    new_charge = Charge(
+        id=f"ch_{uuid.uuid4().hex[:10]}",
         amount=payload.amount,
-        currency=payload.currency,
+        currency=payload.currency.lower(),
         customer_id=payload.customer_id,
-        status="succeeded",
-        idempotency_key=idempotency_key,
+        status="succeeded"
     )
-    session.add(charge)
-    try:
-        await session.commit()
-    except IntegrityError:
-        await session.rollback()
-        if not idempotency_key:
-            raise
+    db.add(new_charge)
+    db.commit()
+    db.refresh(new_charge)
 
-        existing_charge = await session.scalar(
-            select(Charge).where(Charge.idempotency_key == idempotency_key)
-        )
-        if existing_charge is None:
-            raise
+    # Convert to serializable dict
+    result_data = {
+        "id": new_charge.id,
+        "amount": new_charge.amount,
+        "currency": new_charge.currency,
+        "customer_id": new_charge.customer_id,
+        "status": new_charge.status,
+        "created_at": new_charge.created_at.isoformat()
+    }
 
-        response.status_code = status.HTTP_200_OK
-        response.headers["X-Cache-Lookup"] = "HIT"
-        return _charge_response(existing_charge)
+    # 4. Save to Redis with TTL
+    if idempotency_key:
+        store_cached_charge(idempotency_key, result_data)
 
     response.headers["X-Cache-Lookup"] = "MISS"
-    return _charge_response(charge)
+    return result_data
