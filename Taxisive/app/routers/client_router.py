@@ -4,13 +4,13 @@ import uuid
 import httpx
 from fastapi import APIRouter, HTTPException
 
-from app.schemas.charge_schema import ChargeRequest
+from app.schemas.charge_schema import ChargeCreate
 
 router = APIRouter(prefix="/client", tags=["Client Runner"])
 
 @router.post("/trigger-checkout", summary="Client runner executing retries with backoff & jitter")
 async def trigger_checkout(
-    payload: ChargeRequest,
+    payload: ChargeCreate,
     fail_count: int = 2,
     failure_type: str = "server_crash_503"
 ):

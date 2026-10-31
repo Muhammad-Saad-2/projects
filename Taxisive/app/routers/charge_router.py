@@ -2,7 +2,7 @@
 import uuid
 from typing import Annotated, Optional
 from fastapi import APIRouter, Depends, Header, HTTPException, Response, status
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db_session
 from app.models.charge_model import Charge
@@ -17,16 +17,16 @@ router = APIRouter(prefix="/charges", tags=["Charges"])
     status_code=status.HTTP_201_CREATED,
     summary="Charge endpoint with Redis-backed Idempotency"
 )
-def create_charge(
+async def create_charge(
     payload: ChargeCreate,
     response: Response,
-    db: Session = Depends(get_db_session),
+    db: AsyncSession = Depends(get_db_session),
     idempotency_key: Annotated[Optional[str], Header(alias="Idempotency-Key")] = None,
     simulate_fail: Optional[bool] = False
 ):
     # 1. Check Redis Idempotency Ledger
     if idempotency_key:
-        cached_result = get_cache(idempotency_key)
+        cached_result = await get_cache(idempotency_key)
         if cached_result:
             # Overwrite the default 201 Created to 200 OK for cached hit
             response.status_code = status.HTTP_200_OK
@@ -49,8 +49,8 @@ def create_charge(
         status="succeeded"
     )
     db.add(new_charge)
-    db.commit()
-    db.refresh(new_charge)
+    await db.commit()
+    await db.refresh(new_charge)
 
     # Convert to serializable dict
     result_data = {
@@ -64,7 +64,7 @@ def create_charge(
 
     # 4. Save to Redis with TTL
     if idempotency_key:
-        store_cached_charge(idempotency_key, result_data)
+        await store_cached_charge(idempotency_key, result_data)
 
     response.headers["X-Cache-Lookup"] = "MISS"
     return result_data

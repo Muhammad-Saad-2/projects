@@ -42,7 +42,15 @@ def run_checkout_flow():
 
             # If server returns a 5xx error, raise to trigger retry block
             if res.status_code >= 500:
-                print(f"❌ Server Error [{res.status_code}]: {res.json().get('detail')}")
+                try:
+                    error_body = res.json()
+                except ValueError:
+                    error_body = res.text or "<empty response body>"
+
+                if isinstance(error_body, dict):
+                    error_body = error_body.get("detail", error_body)
+
+                print(f"❌ Server Error [{res.status_code}]: {error_body}")
                 raise httpx.HTTPStatusError("Server error", request=res.request, response=res)
 
             # Success!
